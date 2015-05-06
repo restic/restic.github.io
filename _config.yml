@@ -18,8 +18,8 @@ highlighter: pygments
 title:       "restic"
 keywords:    "restic, golang, backup, encrypted, authenticated, incremental, secure"
 description: "A program that does backups right"
+source_link: "https://github.com/restic/restic"
 favicon:     "img/favicon.ico"
-touch_icon:  "img/apple-touch-icon.png"
 
 
 ### template colors, used site-wide via css ###

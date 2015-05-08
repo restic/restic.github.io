@@ -28,6 +28,7 @@ In order to install restic, run the following commands:
 
     export GOPATH=~/src/go
     go get github.com/restic/restic/cmd/restic
+    $GOPATH/bin/restic --help
 
 Using restic
 ============

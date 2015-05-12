@@ -44,7 +44,7 @@ In order to create a repository at `/tmp/backup`, run the following command and 
     Please note that knowledge of your password is required to access the repository.
     Losing your password means that your data is irrecoverably lost.
 
-Remembering your password is important! If you loose it, you won't be able to access data stored in the repository.
+Remembering your password is important! If you lose it, you won't be able to access data stored in the repository.
 
 Now we're ready to backup some data. Run the following command and enter the repository password you chose above again:
 

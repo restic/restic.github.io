@@ -19,16 +19,39 @@ restic is a program that does backups right. The design goals are:
 
  * *Free*: restic is free software and licensed under the [BSD 2-Clause License](https://github.com/restic/restic/blob/master/LICENSE)
 
-Installation
-============
+Building
+========
 
-restic is written in the Go programming language. At the moment, the only way to install restic on your system is to compile it from source. Please read the [Getting Started Guide](https://golang.org/doc/install) of Go if you need help installing Go. You need at least version 1.3.
+restic is written in the Go programming language. At the moment, the only way to install restic on your system is to compile it from source. You need at least Go version 1.3.
 
-In order to install restic, run the following commands:
+In order to build restic, run `make` in the checked-out repository, afterwards you'll find the binary in the current directory:
 
-    export GOPATH=~/src/go
-    go get github.com/restic/restic/cmd/restic
-    $GOPATH/bin/restic --help
+    $ make
+    [...]
+
+    $ ./restic --help
+    Usage:
+      restic [OPTIONS] <command>
+
+    Application Options:
+      -r, --repo= Repository directory to backup to/restore from
+
+    Help Options:
+      -h, --help  Show this help message
+
+    Available commands:
+      backup     save file/directory
+      cache      manage cache
+      cat        dump something
+      find       find a file/directory
+      fsck       check the repository
+      init       create repository
+      key        manage keys
+      list       lists data
+      ls         list files
+      restore    restore a snapshot
+      snapshots  show snapshots
+      version    display version
 
 Using restic
 ============

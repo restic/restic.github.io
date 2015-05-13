@@ -17,7 +17,7 @@ restic is a program that does backups right. The design goals are:
 
  * *Efficient:* With the growth of data, additional snapshots should only take the storage of the actual increment. Even more, duplicate data should be de-duplicated before it is actually written to the storage backend to save precious backup space.
 
- * *Free:* restic is free software and licensed under the [BSD 2-Clause License](https://github.com/restic/restic/blob/master/LICENSE). restic is actively developed on [GitHub](https://github.com/restic/restic/).
+ * *Free:* restic is free software and licensed under the [BSD 2-Clause License](https://github.com/restic/restic/blob/master/LICENSE) and actively developed on [GitHub](https://github.com/restic/restic/).
 
 Building
 ========

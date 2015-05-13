@@ -28,31 +28,31 @@ In order to build restic, run `make` in the checked-out repository, afterwards y
 
 {% highlight console %}
 $ make
- [...]
+[...]
 
 $ ./restic --help
- Usage:
-   restic [OPTIONS] <command>
+Usage:
+  restic [OPTIONS] <command>
 
- Application Options:
-   -r, --repo= Repository directory to backup to/restore from
+Application Options:
+  -r, --repo= Repository directory to backup to/restore from
 
- Help Options:
-   -h, --help  Show this help message
+Help Options:
+  -h, --help  Show this help message
 
- Available commands:
-   backup     save file/directory
-   cache      manage cache
-   cat        dump something
-   find       find a file/directory
-   fsck       check the repository
-   init       create repository
-   key        manage keys
-   list       lists data
-   ls         list files
-   restore    restore a snapshot
-   snapshots  show snapshots
-   version    display version
+Available commands:
+  backup     save file/directory
+  cache      manage cache
+  cat        dump something
+  find       find a file/directory
+  fsck       check the repository
+  init       create repository
+  key        manage keys
+  list       lists data
+  ls         list files
+  restore    restore a snapshot
+  snapshots  show snapshots
+  version    display version
 {% endhighlight %}
 
 Using restic
@@ -64,11 +64,11 @@ In order to create a repository at `/tmp/backup`, run the following command and 
 
 {% highlight console %}
 $ restic init --repository /tmp/backup init
- enter password for new backend:
- enter password again:
- created restic backend 085b3c76b9 at /tmp/backup
- Please note that knowledge of your password is required to access the repository.
- Losing your password means that your data is irrecoverably lost.
+enter password for new backend:
+enter password again:
+created restic backend 085b3c76b9 at /tmp/backup
+Please note that knowledge of your password is required to access the repository.
+Losing your password means that your data is irrecoverably lost.
 {% endhighlight %}
 
 Remembering your password is important! If you lose it, you won't be able to access data stored in the repository.
@@ -77,44 +77,44 @@ Now we're ready to backup some data. Run the following command and enter the rep
 
 {% highlight console %}
 $ restic -r /tmp/backup backup ~/work
- enter password for repository:
- scan [/home/user/work]
- scanned 764 directories, 1816 files in 0:00
- [0:29] 100.00%  54.732 MiB/s  1.582 GiB / 1.582 GiB  2580 / 2580 items  0 errors  ETA 0:00
- duration: 0:29, 54.47MiB/s
- snapshot 40dc1520 saved
+enter password for repository:
+scan [/home/user/work]
+scanned 764 directories, 1816 files in 0:00
+[0:29] 100.00%  54.732 MiB/s  1.582 GiB / 1.582 GiB  2580 / 2580 items  0 errors  ETA 0:00
+duration: 0:29, 54.47MiB/s
+snapshot 40dc1520 saved
 {% endhighlight %}
 
 As you can see, restic created a backup of the directory and was pretty fast! If you run the command again, restic will create another snapshot of your data, but this time it's even faster:
 
 {% highlight console %}
 $ restic -r /tmp/backup backup ~/shared/work/web
- enter password for repository:
- using parent snapshot 40dc1520aa6a07b7b3ae561786770a01951245d2367241e71e9485f18ae8228c
- scan [/home/user/work]
- scanned 764 directories, 1816 files in 0:00
- [0:00] 100.00%  0B/s  1.582 GiB / 1.582 GiB  2580 / 2580 items  0 errors  ETA 0:00
- duration: 0:00, 6572.38MiB/s
- snapshot 79766175 saved
+enter password for repository:
+using parent snapshot 40dc1520aa6a07b7b3ae561786770a01951245d2367241e71e9485f18ae8228c
+scan [/home/user/work]
+scanned 764 directories, 1816 files in 0:00
+[0:00] 100.00%  0B/s  1.582 GiB / 1.582 GiB  2580 / 2580 items  0 errors  ETA 0:00
+duration: 0:00, 6572.38MiB/s
+snapshot 79766175 saved
 {% endhighlight %}
 
 This is deduplication at work! Now list the all the snapshots in the repository with the `snapshots` command:
 
 {% highlight console %}
 $ restic -r /tmp/backup snapshots
- enter password for repository:
- ID        Date                 Source      Directory
- ----------------------------------------------------------------------
- 40dc1520  2015-05-08 21:38:30  kasimir     /home/user/work
- 79766175  2015-05-08 21:40:19  kasimir     /home/user/work
+enter password for repository:
+ID        Date                 Source      Directory
+----------------------------------------------------------------------
+40dc1520  2015-05-08 21:38:30  kasimir     /home/user/work
+79766175  2015-05-08 21:40:19  kasimir     /home/user/work
 {% endhighlight %}
 
 Restoring a snapshot is as easy as it sounds, just use the following command to restore the contents of the latest snapshot to `/tmp/restore-work`:
 
 {% highlight console %}
 $ restic -r /tmp/backup restore 79766175 ~/tmp/restore-work
- enter password for repository: 
- restoring <Snapshot of [/home/user/work] at 2015-05-08 21:40:19.884408621 +0200 CEST> to /tmp/restore-work
+enter password for repository: 
+restoring <Snapshot of [/home/user/work] at 2015-05-08 21:40:19.884408621 +0200 CEST> to /tmp/restore-work
 {% endhighlight %}
 
 Contribute and Documentation

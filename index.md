@@ -27,6 +27,11 @@ restic is written in the Go programming language. At the moment, the only way to
 In order to build restic, run `make` in the checked-out repository, afterwards you'll find the binary in the current directory:
 
 {% highlight console %}
+$ git clone https://github.com/restic/restic
+[...]
+
+$ cd restic
+
 $ make
 [...]
 

@@ -132,6 +132,14 @@ Contact
 
 If you discover a bug or find something surprising, please feel free to [open a github issue](https://github.com/restic/restic/issues/new). If you would like to chat about restic, there is also the IRC channel `#restic` on `irc.freenode.net`. Or just write an email :)
 
+Talks
+=====
+
+The following talks have been given about restic:
+
+ * [Talk about restic at CCC Aachen](https://videoag.fsmpi.rwth-aachen.de/?view=player&lectureid=4442#content) (in German)
+ * [Lightning Talk at FOSDEM 2015](https://www.youtube.com/watch?v=oM-MfeflUZ8&t=11m40s): A short introduction (with slightly outdated command line)
+
 License
 =======
 

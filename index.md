@@ -24,7 +24,7 @@ Building
 
 restic is written in the Go programming language. At the moment, the only way to install restic on your system is to compile it from source. You need at least Go version 1.3.
 
-In order to build restic, run `make` in the checked-out repository, afterwards you'll find the binary in the current directory:
+In order to build restic, execute the following steps:
 
 {% highlight console %}
 $ git clone https://github.com/restic/restic
@@ -32,7 +32,7 @@ $ git clone https://github.com/restic/restic
 
 $ cd restic
 
-$ make
+$ go run build.go
 [...]
 
 $ ./restic --help

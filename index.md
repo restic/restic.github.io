@@ -19,6 +19,13 @@ restic is a program that does backups right. The design goals are:
 
  * *Free:* restic is free software and licensed under the [BSD 2-Clause License](https://github.com/restic/restic/blob/master/LICENSE) and actively developed on [GitHub](https://github.com/restic/restic/).
 
+Demo
+====
+
+A short recorded demo of restic:
+
+<script type="text/javascript" src="https://asciinema.org/a/anro1vq39k80ae7c46s9nj6bs.js" id="asciicast-23554" async></script>
+
 Building
 ========
 

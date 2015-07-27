@@ -75,7 +75,7 @@ First, we need to create a "repository". This is the place where your backups wi
 In order to create a repository at `/tmp/backup`, run the following command and enter the same password twice:
 
 {% highlight console %}
-$ restic init --repository /tmp/backup init
+$ restic init --repo /tmp/backup
 enter password for new backend:
 enter password again:
 created restic backend 085b3c76b9 at /tmp/backup

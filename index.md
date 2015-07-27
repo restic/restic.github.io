@@ -75,7 +75,7 @@ First, we need to create a "repository". This is the place where your backups wi
 In order to create a repository at `/tmp/backup`, run the following command and enter the same password twice:
 
 {% highlight console %}
-$ restic init --repository /tmp/backup init
+$ restic init -r /tmp/backup init
 enter password for new backend:
 enter password again:
 created restic backend 085b3c76b9 at /tmp/backup
@@ -124,7 +124,7 @@ ID        Date                 Source      Directory
 Restoring a snapshot is as easy as it sounds, just use the following command to restore the contents of the latest snapshot to `/tmp/restore-work`:
 
 {% highlight console %}
-$ restic -r /tmp/backup restore 79766175 ~/tmp/restore-work
+$ restic -r /tmp/backup restore 79766175 --target ~/tmp/restore-work
 enter password for repository: 
 restoring <Snapshot of [/home/user/work] at 2015-05-08 21:40:19.884408621 +0200 CEST> to /tmp/restore-work
 {% endhighlight %}

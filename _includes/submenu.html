@@ -1,8 +1,0 @@
-{% if page.submenu %}
-  <h3>Navigation</h3>
-  <ul>
-    {% for item in page.submenu %}
-    <li><a href="#{{ item.anchor }}">{{ item.title }}</a></li>
-    {% endfor %}
-  </ul>
-{% endif %}

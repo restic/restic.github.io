@@ -1,0 +1,10 @@
+{% if page.sitenav %}
+<div class="site-nav">
+<h3>Table of Contents</h3>
+<ul>
+{% for item in page.sitenav %}
+<li><a href="#{{ item.anchor }}">{{ item.title }}</a></li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}

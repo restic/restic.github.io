@@ -101,20 +101,20 @@ snapshot 79766175 saved
 
 You can even backup individual files in the same repository. 
 
-```
+{% highlight console %}
 $restic -r /tmp/backup backup ~/work.txt
 scan [/tmp/backup backup ~/work.txt]
 scanned 0 directories, 1 files in 0:00
 [0:00] 100.00%  0B/s  220B / 220B  1 / 1 items  0 errors  ETA 0:00
 duration: 0:00, 0.03MiB/s
 snapshot 31f7bd63 saved
-```
+{% endhighlight %}
 
 In fact several hosts may use the same repository to backup directories and files leading to a greater deduplication.
 
 ## <a name="list-snapshots"></a>List all snapshots
 
-Now list the all the snapshots in the repository with the `snapshots` command:
+Now, you can list all the snapshots stored in the repository:
 
 {% highlight console %}
 $ restic -r /tmp/backup snapshots
@@ -137,16 +137,14 @@ restoring <Snapshot of [/home/user/work] at 2015-05-08 21:40:19.884408621 +0200 
 
 ## <a name="browse-repository-objects"></a>Browse repository objects
 
-Internaly, a repository is able to store data of several different types described in the [design documentation](https://github.com/restic/restic/blob/master/doc/Design.md). 
-
-The structure of the repository can be explore with the ```list``` command:
+Internaly, a repository stores data of several different types described in the [design documentation](https://github.com/restic/restic/blob/master/doc/Design.md). You can `list` objects such as blobs, packs, index, snapshots, keys or locks with the following command:
 
 {% highlight console %}
 $restic -r /tmp/backup list snapshots
 d369ccc7d126594950bf74f0a348d5d98d9e99f3215082eb69bf02dc9b3e464c
 {% endhighlight %}
 
-The ```cat``` command allows you to display the json representation of objects such as snapshots or trees and the content of the blobs.
+The `cat` command allows you to display the json representation of the objects or its raw content.
 
 {% highlight console %}
 $restic -r /tmp/backup cat snapshot d369ccc7d126594950bf74f0a348d5d98d9e99f3215082eb69bf02dc9b3e464c
@@ -157,7 +155,7 @@ enter password for repository:
   "paths": [
     "/home/user/work"
   ],
-  "hostname": "localhost",
+  "hostname": "kasimir",
   "username": "username",
   "uid": 501,
   "gid": 20
@@ -166,27 +164,27 @@ enter password for repository:
 
 ## <a name="manage-repository-keys"></a>Manage repository keys
 
-Restic allows to set multiple access keys or passwords per repository. In fact you can list, add, remove and change these keys:
+The `key` command allows you to set multiple access keys or passwords per repository. In fact, you can use the `list`, `add`, `remove` and `passwd` sub-commands to manage these keys very precisely:
 
 {% highlight console %}
 $restic -r /tmp/backup key list
 enter password for repository:
  ID          User        Host        Created
 ----------------------------------------------------------------------
-*eb78040b    username    localhost   2015-08-12 13:29:57
+*eb78040b    username    kasimir   2015-08-12 13:29:57
 
 $ restic -r /tmp/backup key add 
 enter password for repository:
 enter password for new key:
 enter password again:
-saved new key as <Key of username@localhost, created on 2015-08-12 13:35:05.316831933 +0200 CEST>
+saved new key as <Key of username@kasimir, created on 2015-08-12 13:35:05.316831933 +0200 CEST>
 
 $restic -r backup key list
 enter password for repository:
  ID          User        Host        Created
 ----------------------------------------------------------------------
- 5c657874    username    localhost   2015-08-12 13:35:05
-*eb78040b    username    localhost   2015-08-12 13:29:57
+ 5c657874    username    kasimir   2015-08-12 13:35:05
+*eb78040b    username    kasimir   2015-08-12 13:29:57
 {% endhighlight %}
 
 ## <a name="check-integrity-consistency"></a>Check integrity and consistency
@@ -194,7 +192,7 @@ enter password for repository:
 Imagine a malveillant user get a privileged access to your repository and modify your backup with the intention to make you restore malicious data.
 
 {% highlight console %}
-sudo echo "boom!" >> backup/index/d795ffa99a8ab8f8e42cec1f814df4e48b8f49129360fb57613df93739faee97
+sudo echo "boom" >> backup/index/d795ffa99a8ab8f8e42cec1f814df4e48b8f49129360fb57613df93739faee97
 {% endhighlight %}
 
 Restic allows you to check the integrity and consistency of your backup:
@@ -205,7 +203,7 @@ Load indexes
 ciphertext verification failed
 {% endhighlight %}
 
-Furthermore, when trying to restore your snapshot, the same verification will occur.
+Furthermore, when trying to restore your snapshot, the same verification will occur:
 
 {% highlight console %}
 $restic -r /tmp/backup restore 79766175 --target ~/tmp/restore-work
@@ -215,7 +213,7 @@ ciphertext verification failed
 
 ## <a name="mount-repository"></a>Mount a repository
 
-Browsing your backup as a regular filesystem is just as easy, create a mount point and use the following command to serve the repository with FUSE.
+Browsing your backup as a regular filesystem also very easy, create a mount point, such as :/mnt/restic` and use the following command to serve the repository with FUSE.
 
 {% highlight console %}
 $ mkdir /mnt/restic
@@ -227,9 +225,9 @@ Don't forget to umount after quitting!
 
 ## <a name="sftp-repository"></a>Create an SFTP repository
 
-In order to backup data via SFTP, you must first setup a server with SSH and let it know your public key. Password less login is important since restic fail to connect if it is prompted for credentials.
+In order to backup data via SFTP, you must first setup a server with SSH and let it know your public key. Password less login is really important since restic fails to connect the repository the server prompts for credentials.
 
-Then the setup of the SFTP repository can be achieved with the init command:
+Once the server configured, the setup of the SFTP repository can simply be achieved by changing the URL scheme in the `init` command:
 
 {% highlight console %}
 $restic -r sftp://user@host/tmp/backup init
@@ -243,7 +241,7 @@ Losing your password means that your data is irrecoverably lost.
 
 ## <a name="s3-repository"></a>Create an Amazon S3 repository
 
-Restic can backup data on any Amazon S3 bucket. However, changing the url scheme is not enough since Amazon uses special security credentials to sign requests. By consequence, you must first setup the following environment variables with the credentials you obtained while creating the bucket.
+Restic can backup data on any Amazon S3 bucket. However, in this case, changing the URL scheme is not enough since Amazon uses special security credentials to sign HTTP requests. By consequence, you must first setup the following environment variables with the credentials you obtained while creating the bucket.
 
 {% highlight console %}
 $export AWS_ACCESS_KEY_ID=<MY_ACCESS_KEY>

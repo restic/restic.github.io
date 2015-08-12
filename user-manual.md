@@ -13,7 +13,6 @@ sitenav:
   - { anchor: "check-integrity-consistency", title: "Check integrity and consistency" }
   - { anchor: "sftp-repository", title: "SFTP repository" }
   - { anchor: "s3-repository", title: "S3 repository" }
-  - { anchor: "http-repository", title: "HTTP repository" }
 ---
 
 ## <a name="building-restic"></a>Building restic
@@ -261,19 +260,3 @@ created restic backend eefee03bbd at s3://region_name/bucket_name
 Please note that knowledge of your password is required to access the repository.
 Losing your password means that your data is irrecoverably lost.
 {% endhighlight %}
-
-## <a name="http-repository"></a>Create an REST repository
-
-Restic can save data on any HTTP server that implements the following [REST API](/rest-api.html). In order to initialize such a repository you only need to specify the url of your server.
-
-{% highlight console %}
-$restic -r https://username:password@host/path/to/backup init
-enter password for new backend:
-enter password again:
-created restic backend 1d3f2a11e9 at https://username:password@host/path/to/backup
-Please note that knowledge of your password is required to access the repository.
-Losing your password means that your data is irrecoverably lost.
-{% endhighlight %}
-
-
-

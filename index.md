@@ -1,9 +1,14 @@
 ---
 layout: default
+sitenav:
+  - { anchor: "about", title: "About" }
+  - { anchor: "quickstart", title: "Quickstart" }
+  - { anchor: "contribute", title: "Contribute" }
+  - { anchor: "talks", title: "Talks" }
+  - { anchor: "license", title: "License" }
 ---
 
-restic
-======
+<h1 class="page-title"><a name="about"></a>restic</h1>
 
 restic is a program that does backups right. The design goals are:
 
@@ -19,140 +24,25 @@ restic is a program that does backups right. The design goals are:
 
  * *Free:* restic is free software and licensed under the [BSD 2-Clause License](https://github.com/restic/restic/blob/master/LICENSE) and actively developed on [GitHub](https://github.com/restic/restic/).
 
-Demo
-====
+## <a name="quickstart"></a>Quickstart
 
 A short recorded demo of restic:
 
 <script type="text/javascript" src="https://asciinema.org/a/anro1vq39k80ae7c46s9nj6bs.js" id="asciicast-23554" async></script>
 
-Building
-========
+To learn more about restic, checkout the [user manual](/user-manual.html).
 
-restic is written in the Go programming language. At the moment, the only way to install restic on your system is to compile it from source. You need at least Go version 1.3.
-
-In order to build restic, execute the following steps:
-
-{% highlight console %}
-$ git clone https://github.com/restic/restic
-[...]
-
-$ cd restic
-
-$ go run build.go
-[...]
-
-$ ./restic --help
-Usage:
-  restic [OPTIONS] <command>
-
-Application Options:
-  -r, --repo= Repository directory to backup to/restore from
-
-Help Options:
-  -h, --help  Show this help message
-
-Available commands:
-  backup     save file/directory
-  cache      manage cache
-  cat        dump something
-  find       find a file/directory
-  fsck       check the repository
-  init       create repository
-  key        manage keys
-  list       lists data
-  ls         list files
-  restore    restore a snapshot
-  snapshots  show snapshots
-  version    display version
-{% endhighlight %}
-
-Using restic
-============
-
-First, we need to create a "repository". This is the place where your backups will be saved at.
-
-In order to create a repository at `/tmp/backup`, run the following command and enter the same password twice:
-
-{% highlight console %}
-$ restic init --repo /tmp/backup
-enter password for new backend:
-enter password again:
-created restic backend 085b3c76b9 at /tmp/backup
-Please note that knowledge of your password is required to access the repository.
-Losing your password means that your data is irrecoverably lost.
-{% endhighlight %}
-
-Remembering your password is important! If you lose it, you won't be able to access data stored in the repository.
-
-Now we're ready to backup some data. Run the following command and enter the repository password you chose above again:
-
-{% highlight console %}
-$ restic -r /tmp/backup backup ~/work
-enter password for repository:
-scan [/home/user/work]
-scanned 764 directories, 1816 files in 0:00
-[0:29] 100.00%  54.732 MiB/s  1.582 GiB / 1.582 GiB  2580 / 2580 items  0 errors  ETA 0:00
-duration: 0:29, 54.47MiB/s
-snapshot 40dc1520 saved
-{% endhighlight %}
-
-As you can see, restic created a backup of the directory and was pretty fast! If you run the command again, restic will create another snapshot of your data, but this time it's even faster:
-
-{% highlight console %}
-$ restic -r /tmp/backup backup ~/shared/work/web
-enter password for repository:
-using parent snapshot 40dc1520aa6a07b7b3ae561786770a01951245d2367241e71e9485f18ae8228c
-scan [/home/user/work]
-scanned 764 directories, 1816 files in 0:00
-[0:00] 100.00%  0B/s  1.582 GiB / 1.582 GiB  2580 / 2580 items  0 errors  ETA 0:00
-duration: 0:00, 6572.38MiB/s
-snapshot 79766175 saved
-{% endhighlight %}
-
-This is deduplication at work! Now list the all the snapshots in the repository with the `snapshots` command:
-
-{% highlight console %}
-$ restic -r /tmp/backup snapshots
-enter password for repository:
-ID        Date                 Source      Directory
-----------------------------------------------------------------------
-40dc1520  2015-05-08 21:38:30  kasimir     /home/user/work
-79766175  2015-05-08 21:40:19  kasimir     /home/user/work
-{% endhighlight %}
-
-Restoring a snapshot is as easy as it sounds, just use the following command to restore the contents of the latest snapshot to `/tmp/restore-work`:
-
-{% highlight console %}
-$ restic -r /tmp/backup restore 79766175 --target ~/tmp/restore-work
-enter password for repository: 
-restoring <Snapshot of [/home/user/work] at 2015-05-08 21:40:19.884408621 +0200 CEST> to /tmp/restore-work
-{% endhighlight %}
-
-Browsing your backup as a regular filesystem is just as easy, create a mount point and use the following command to serve the repository with FUSE.
-
-{% highlight console %}
-$ mkdir /mnt/restic
-$ restic -r /tmp/backup mount /mnt/restic
-enter password for repository:
-Now serving /tmp/backup at /tmp/restic
-Don't forget to umount after quitting!
-{% endhighlight %}
-
-Contribute and Documentation
-============================
+## <a name="contribute"></a>Contribute and Documentation
 
 Contributions are welcome! More information can be found in [the restic contribution guidelines](https://github.com/restic/restic/blob/master/CONTRIBUTING.md). A document describing the design of restic and the data structures stored on disc is contained in [the design document](https://github.com/restic/restic/blob/master/doc/Design.md).
 
-Contact
-=======
+## <a name="contact"></a>Contact
 
 If you discover a bug or find something surprising, please feel free to [open a github issue](https://github.com/restic/restic/issues/new). If you would like to chat about restic, there is also the IRC channel `#restic` on `irc.freenode.net`. Or just write an email :)
 
 **Important**: If you discover something that you believe to be a possible critical security problem, please do *not* open a GitHub issue but send an email directly to alexander@bumpern.de. If possible, please encrypt your email using PGP ([0xD3F7A907](https://pgp.mit.edu/pks/lookup?op=get&search=0x91A6868BD3F7A907)).
 
-Talks
-=====
+## <a name="talks"></a>Talks
 
 The following talks will be or have been given about restic:
 
@@ -160,7 +50,10 @@ The following talks will be or have been given about restic:
  * 2015-02-01: [Lightning Talk at FOSDEM 2015](https://www.youtube.com/watch?v=oM-MfeflUZ8&t=11m40s): A short introduction (with slightly outdated command line)
  * 2015-01-27: [Talk about restic at CCC Aachen](https://videoag.fsmpi.rwth-aachen.de/?view=player&lectureid=4442#content) (in German)
 
-License
-=======
+## <a name="license"></a>License
 
 Restic is licensed under "BSD 2-Clause License". You can find the complete text in the file `LICENSE`.
+
+
+
+

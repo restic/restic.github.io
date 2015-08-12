@@ -6,11 +6,11 @@ sitenav:
   - { anchor: "initialize-repository", title: "Initialize a repository" }
   - { anchor: "create-snapshot", title: "Create a snapshot" }
   - { anchor: "list-snapshots", title: "List all snapshots" }
-  - { anchor: "restore-snapshots", title: "Restore a snapshot" }
-  - { anchor: "mount-repository", title: "Mount a repository" }
+  - { anchor: "restore-snapshot", title: "Restore a snapshot" }
   - { anchor: "browse-repository-objects", title: "Browse repository objects" }
   - { anchor: "manage-repository-keys", title: "Manage repository keys" }
-  - { anchor: "check-integrity-consistency", title: "Check integrity and consistency" }
+  - { anchor: "check-integrity-consistency", title: "Check the repository" }
+  - { anchor: "mount-repository", title: "Mount a repository" }
   - { anchor: "sftp-repository", title: "SFTP repository" }
   - { anchor: "s3-repository", title: "S3 repository" }
 ---
@@ -135,18 +135,6 @@ enter password for repository:
 restoring <Snapshot of [/home/user/work] at 2015-05-08 21:40:19.884408621 +0200 CEST> to /tmp/restore-work
 {% endhighlight %}
 
-## <a name="mount-repository"></a>Mount a repository
-
-Browsing your backup as a regular filesystem is just as easy, create a mount point and use the following command to serve the repository with FUSE.
-
-{% highlight console %}
-$ mkdir /mnt/restic
-$ restic -r /tmp/backup mount /mnt/restic
-enter password for repository:
-Now serving /tmp/backup at /tmp/restic
-Don't forget to umount after quitting!
-{% endhighlight %}
-
 ## <a name="browse-repository-objects"></a>Browse repository objects
 
 Internaly, a repository is able to store data of several different types described in the [design documentation](https://github.com/restic/restic/blob/master/doc/Design.md). 
@@ -223,6 +211,18 @@ Furthermore, when trying to restore your snapshot, the same verification will oc
 $restic -r /tmp/backup restore 79766175 --target ~/tmp/restore-work
 Load indexes
 ciphertext verification failed
+{% endhighlight %}
+
+## <a name="mount-repository"></a>Mount a repository
+
+Browsing your backup as a regular filesystem is just as easy, create a mount point and use the following command to serve the repository with FUSE.
+
+{% highlight console %}
+$ mkdir /mnt/restic
+$ restic -r /tmp/backup mount /mnt/restic
+enter password for repository:
+Now serving /tmp/backup at /tmp/restic
+Don't forget to umount after quitting!
 {% endhighlight %}
 
 ## <a name="sftp-repository"></a>Create an SFTP repository

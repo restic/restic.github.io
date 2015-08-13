@@ -4,6 +4,7 @@ sitenav:
   - { anchor: "about", title: "About" }
   - { anchor: "quickstart", title: "Quickstart" }
   - { anchor: "contribute", title: "Contribute" }
+  - { anchor: "contact", title: "Contact" }
   - { anchor: "talks", title: "Talks" }
   - { anchor: "license", title: "License" }
 ---

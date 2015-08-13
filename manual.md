@@ -76,7 +76,7 @@ For automated backups, restic accepts the repository location in the environment
 
 ## <a name="create-snapshot"></a>Create a snapshot
 
-Now we're ready to backup some data. The contents of a directory at a specific point in time is called a "Snapshot" in restic. Run the following command and enter the repository password you chose above again:
+Now we're ready to backup some data. The contents of a directory at a specific point in time is called a "snapshot" in restic. Run the following command and enter the repository password you chose above again:
 
 {% highlight console %}
 $ restic -r /tmp/backup backup ~/work
@@ -190,7 +190,7 @@ ciphertext verification failed
 
 ## <a name="mount-repository"></a>Mount a repository
 
-Browsing your backup as a regular file system also very easy. First, create a mount point such as `/mnt/restic` and then use the following command to serve the repository with FUSE:
+Browsing your backup as a regular file system is also very easy. First, create a mount point such as `/mnt/restic` and then use the following command to serve the repository with FUSE:
 
 {% highlight console %}
 $ mkdir /mnt/restic
@@ -202,9 +202,9 @@ Don't forget to umount after quitting!
 
 ## <a name="sftp-repository"></a>Create an SFTP repository
 
-In order to backup data via SFTP, you must first setup a server with SSH and let it know your public key. Passwordless login is really important since restic fails to connect the repository the server prompts for credentials.
+In order to backup data via SFTP, you must first set up a server with SSH and let it know your public key. Passwordless login is really important since restic fails to connect to the repository if the server prompts for credentials.
 
-Once the server configured, the setup of the SFTP repository can simply be achieved by changing the URL scheme in the `init` command:
+Once the server is configured, the setup of the SFTP repository can simply be achieved by changing the URL scheme in the `init` command:
 
 {% highlight console %}
 $ restic -r sftp://user@host//tmp/backup init
@@ -220,11 +220,11 @@ Yes, that's really two slash (`/`) characters after the host name, here the dire
 
 ## <a name="s3-repository"></a>Create an Amazon S3 repository
 
-Restic can backup data on any Amazon S3 bucket. However, in this case, changing the URL scheme is not enough since Amazon uses special security credentials to sign HTTP requests. By consequence, you must first setup the following environment variables with the credentials you obtained while creating the bucket.
+Restic can backup data to any Amazon S3 bucket. However, in this case, changing the URL scheme is not enough since Amazon uses special security credentials to sign HTTP requests. By consequence, you must first setup the following environment variables with the credentials you obtained while creating the bucket.
 
 {% highlight console %}
-$export AWS_ACCESS_KEY_ID=<MY_ACCESS_KEY>
-$export AWS_SECRET_ACCESS_KEY=<MY_SECRET_ACCESS_KEY>
+$ export AWS_ACCESS_KEY_ID=<MY_ACCESS_KEY>
+$ export AWS_SECRET_ACCESS_KEY=<MY_SECRET_ACCESS_KEY>
 {% endhighlight %}
 
 You can then easily initialize a repository that uses your Amazon S3 as a backend.

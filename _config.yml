@@ -1,9 +1,10 @@
 # Site settings
-title: restic - backups done right
-description: > # this means to ignore newlines until "baseurl:"
-  restic is a program that does backups right. IT's easy, fast, secure and
-  efficient, and the backups are verifiable!
-baseurl: "" # the subpath of your site, e.g. /blog/
+title: restic
+description: Backups done right! 
+# this means to ignore newlines until "baseurl:"
+# restic is a program that does backups right. IT's easy, fast, secure and
+# efficient, and the backups are verifiable!
+baseurl: "/" # the subpath of your site, e.g. /blog/
 url: "https://restic.github.io" # the base hostname & protocol for your site
 github_username: restic
 

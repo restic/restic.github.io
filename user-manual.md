@@ -7,12 +7,12 @@ sitenav:
   - { anchor: "create-snapshot", title: "Create a snapshot" }
   - { anchor: "list-snapshots", title: "List all snapshots" }
   - { anchor: "restore-snapshot", title: "Restore a snapshot" }
-  - { anchor: "browse-repository-objects", title: "Browse repository objects" }
   - { anchor: "manage-repository-keys", title: "Manage repository keys" }
   - { anchor: "check-integrity-consistency", title: "Check the repository" }
   - { anchor: "mount-repository", title: "Mount a repository" }
   - { anchor: "sftp-repository", title: "SFTP repository" }
   - { anchor: "s3-repository", title: "S3 repository" }
+  - { anchor: "browse-repository-objects", title: "Under the hood: Browse repository objects" }
 ---
 
 ## <a name="building-restic"></a>Building restic
@@ -72,9 +72,11 @@ Losing your password means that your data is irrecoverably lost.
 
 Remembering your password is important! If you lose it, you won't be able to access data stored in the repository.
 
+For automated backups, restic accepts the repository location in the environment variable `RESTIC_REPOSITORY` and also the password in the variable `RESTIC_PASSWORD`.
+
 ## <a name="create-snapshot"></a>Create a snapshot
 
-Now we're ready to backup some data. Run the following command and enter the repository password you chose above again:
+Now we're ready to backup some data. The contents of a directory at a specific point in time is called a "Snapshot" in restic. Run the following command and enter the repository password you chose above again:
 
 {% highlight console %}
 $ restic -r /tmp/backup backup ~/work
@@ -86,7 +88,9 @@ duration: 0:29, 54.47MiB/s
 snapshot 40dc1520 saved
 {% endhighlight %}
 
-As you can see, restic created a backup of the directory and was pretty fast! If you run the command again, restic will create another snapshot of your data, but this time it's even faster. This is deduplication at work! 
+As you can see, restic created a backup of the directory and was pretty fast! The specific snapshot just created is identified by a sequence of hexadecimal characters, `40dc1520` in this case.
+
+If you run the command again, restic will create another snapshot of your data, but this time it's even faster. This is deduplication at work! 
 
 {% highlight console %}
 $ restic -r /tmp/backup backup ~/shared/work/web
@@ -102,7 +106,7 @@ snapshot 79766175 saved
 You can even backup individual files in the same repository. 
 
 {% highlight console %}
-$restic -r /tmp/backup backup ~/work.txt
+$ restic -r /tmp/backup backup ~/work.txt
 scan [/tmp/backup backup ~/work.txt]
 scanned 0 directories, 1 files in 0:00
 [0:00] 100.00%  0B/s  220B / 220B  1 / 1 items  0 errors  ETA 0:00
@@ -135,39 +139,12 @@ enter password for repository:
 restoring <Snapshot of [/home/user/work] at 2015-05-08 21:40:19.884408621 +0200 CEST> to /tmp/restore-work
 {% endhighlight %}
 
-## <a name="browse-repository-objects"></a>Browse repository objects
-
-Internaly, a repository stores data of several different types described in the [design documentation](https://github.com/restic/restic/blob/master/doc/Design.md). You can `list` objects such as blobs, packs, index, snapshots, keys or locks with the following command:
-
-{% highlight console %}
-$restic -r /tmp/backup list snapshots
-d369ccc7d126594950bf74f0a348d5d98d9e99f3215082eb69bf02dc9b3e464c
-{% endhighlight %}
-
-The `cat` command allows you to display the json representation of the objects or its raw content.
-
-{% highlight console %}
-$restic -r /tmp/backup cat snapshot d369ccc7d126594950bf74f0a348d5d98d9e99f3215082eb69bf02dc9b3e464c
-enter password for repository:
-{
-  "time": "2015-08-12T12:52:44.091448856+02:00",
-  "tree": "05cec17e8d3349f402576d02576a2971fc0d9f9776ce2f441c7010849c4ff5af",
-  "paths": [
-    "/home/user/work"
-  ],
-  "hostname": "kasimir",
-  "username": "username",
-  "uid": 501,
-  "gid": 20
-}
-{% endhighlight %}
-
 ## <a name="manage-repository-keys"></a>Manage repository keys
 
 The `key` command allows you to set multiple access keys or passwords per repository. In fact, you can use the `list`, `add`, `remove` and `passwd` sub-commands to manage these keys very precisely:
 
 {% highlight console %}
-$restic -r /tmp/backup key list
+$ restic -r /tmp/backup key list
 enter password for repository:
  ID          User        Host        Created
 ----------------------------------------------------------------------
@@ -179,7 +156,7 @@ enter password for new key:
 enter password again:
 saved new key as <Key of username@kasimir, created on 2015-08-12 13:35:05.316831933 +0200 CEST>
 
-$restic -r backup key list
+$ restic -r backup key list
 enter password for repository:
  ID          User        Host        Created
 ----------------------------------------------------------------------
@@ -189,31 +166,31 @@ enter password for repository:
 
 ## <a name="check-integrity-consistency"></a>Check integrity and consistency
 
-Imagine a malveillant user get a privileged access to your repository and modify your backup with the intention to make you restore malicious data.
+Imagine your repository is saved on a server that has a faulty hard drive, or even worse, attackers get privileged access and modify your backup with the intention to make you restore malicious data:
 
 {% highlight console %}
-sudo echo "boom" >> backup/index/d795ffa99a8ab8f8e42cec1f814df4e48b8f49129360fb57613df93739faee97
+$ sudo echo "boom" >> backup/index/d795ffa99a8ab8f8e42cec1f814df4e48b8f49129360fb57613df93739faee97
 {% endhighlight %}
 
-Restic allows you to check the integrity and consistency of your backup:
+In order to detect these things, it is a good idea to regularly use the `check` command to test whether everything is alright, your precious backup data is consistent and the integrity is unharmed:
 
 {% highlight console %}
-$restic -r /tmp/backup check
+$ restic -r /tmp/backup check
 Load indexes
 ciphertext verification failed
 {% endhighlight %}
 
-Furthermore, when trying to restore your snapshot, the same verification will occur:
+Trying to restore a snapshot which has been modified as shown above will yield the same error:
 
 {% highlight console %}
-$restic -r /tmp/backup restore 79766175 --target ~/tmp/restore-work
+$ restic -r /tmp/backup restore 79766175 --target ~/tmp/restore-work
 Load indexes
 ciphertext verification failed
 {% endhighlight %}
 
 ## <a name="mount-repository"></a>Mount a repository
 
-Browsing your backup as a regular filesystem also very easy, create a mount point, such as :/mnt/restic` and use the following command to serve the repository with FUSE.
+Browsing your backup as a regular file system also very easy. First, create a mount point such as `/mnt/restic` and then use the following command to serve the repository with FUSE:
 
 {% highlight console %}
 $ mkdir /mnt/restic
@@ -225,18 +202,20 @@ Don't forget to umount after quitting!
 
 ## <a name="sftp-repository"></a>Create an SFTP repository
 
-In order to backup data via SFTP, you must first setup a server with SSH and let it know your public key. Password less login is really important since restic fails to connect the repository the server prompts for credentials.
+In order to backup data via SFTP, you must first setup a server with SSH and let it know your public key. Passwordless login is really important since restic fails to connect the repository the server prompts for credentials.
 
 Once the server configured, the setup of the SFTP repository can simply be achieved by changing the URL scheme in the `init` command:
 
 {% highlight console %}
-$restic -r sftp://user@host/tmp/backup init
+$ restic -r sftp://user@host//tmp/backup init
 enter password for new backend:
 enter password again:
-created restic backend f1c6108821 at sftp://user@host/tmp/backup
+created restic backend f1c6108821 at sftp://user@host//tmp/backup
 Please note that knowledge of your password is required to access the repository.
 Losing your password means that your data is irrecoverably lost.
 {% endhighlight %}
+
+Yes, that's really two slash (`/`) characters after the host name, here the directory `/tmp/backup` on the server is meant. If you'd rather like to create a repository in the user's home directory on the server, use the location `sftp://user@host/foo/bar/repo`. In this case the directory is relative to the user's home directory: `foo/bar/repo`.
 
 
 ## <a name="s3-repository"></a>Create an Amazon S3 repository
@@ -251,10 +230,38 @@ $export AWS_SECRET_ACCESS_KEY=<MY_SECRET_ACCESS_KEY>
 You can then easily initialize a repository that uses your Amazon S3 as a backend.
 
 {% highlight console %}
-$restic -r s3://region_name/bucket_name init
+$ restic -r s3://region_name/bucket_name init
 enter password for new backend:
 enter password again:
 created restic backend eefee03bbd at s3://region_name/bucket_name
 Please note that knowledge of your password is required to access the repository.
 Losing your password means that your data is irrecoverably lost.
 {% endhighlight %}
+
+## <a name="browse-repository-objects"></a>Under the hood: Browse repository objects
+
+Internally, a repository stores data of several different types described in the [design documentation](https://github.com/restic/restic/blob/master/doc/Design.md). You can `list` objects such as blobs, packs, index, snapshots, keys or locks with the following command:
+
+{% highlight console %}
+$ restic -r /tmp/backup list snapshots
+d369ccc7d126594950bf74f0a348d5d98d9e99f3215082eb69bf02dc9b3e464c
+{% endhighlight %}
+
+The `cat` command allows you to display the JSON representation of the objects or its raw content.
+
+{% highlight console %}
+$ restic -r /tmp/backup cat snapshot d369ccc7d126594950bf74f0a348d5d98d9e99f3215082eb69bf02dc9b3e464c
+enter password for repository:
+{
+  "time": "2015-08-12T12:52:44.091448856+02:00",
+  "tree": "05cec17e8d3349f402576d02576a2971fc0d9f9776ce2f441c7010849c4ff5af",
+  "paths": [
+    "/home/user/work"
+  ],
+  "hostname": "kasimir",
+  "username": "username",
+  "uid": 501,
+  "gid": 20
+}
+{% endhighlight %}
+

@@ -24,10 +24,7 @@ brew tap restic/restic
 brew install restic
 {% endhighlight %}
 
-If you are using Linux, BSD or Windows, the only way to install restic on your system right now is to compile
-it from source. restic is written in the Go programming language and you need at least Go version 1.3.
-See the [Getting started](https://golang.org/doc/install) guide of the Go project for instructions
-how to install Go.
+If you are using Linux, BSD or Windows, the only way to install restic on your system right now is to compile it from source. restic is written in the Go programming language and you need at least Go version 1.3. See the [Getting started](https://golang.org/doc/install) guide of the Go project for instructions how to install Go.
 
 In order to build restic from source, execute the following steps:
 

@@ -17,9 +17,19 @@ sitenav:
 
 ## <a name="building-restic"></a>Building restic
 
-restic is written in the Go programming language. At the moment, the only way to install restic on your system is to compile it from source. You need at least Go version 1.3.
+If you are using Mac OS X, you can install restic using the [homebrew](http://brew.sh/) packet manager:
 
-In order to build restic, execute the following steps:
+{% highlight console %}
+brew tap restic/restic
+brew install restic
+{% endhighlight %}
+
+If you are using Linux, BSD or Windows, the only way to install restic on your system right now is to compile
+it from source. restic is written in the Go programming language and you need at least Go version 1.3.
+See the [Getting started](https://golang.org/doc/install) guide of the Go project for instructions
+how to install Go.
+
+In order to build restic from source, execute the following steps:
 
 {% highlight console %}
 $ git clone https://github.com/restic/restic

@@ -3,6 +3,7 @@ layout: default
 sitenav:
   - { anchor: "about", title: "About" }
   - { anchor: "quickstart", title: "Quickstart" }
+  - { anchor: "compatibility", title: "Compatibility" }
   - { anchor: "contribute", title: "Contribute" }
   - { anchor: "contact", title: "Contact" }
   - { anchor: "talks", title: "Talks" }
@@ -32,6 +33,13 @@ A short recorded demo of restic:
 <script type="text/javascript" src="https://asciinema.org/a/anro1vq39k80ae7c46s9nj6bs.js" id="asciicast-23554" async></script>
 
 To learn more about restic, checkout the [user manual](/manual.html).
+
+## <a name="compatibility"></a>Compatibility
+
+Backward compatibility for backups is important so that our users are always able to restore saved data. Therefore restic follows [Semantic Versioning](http://semver.org) to clearly define which versions are compatible. The repository and data structures contained therein are considered the "Public API" in the sense of Semantic Versioning.
+
+We guarantee backward compatibility of all repositories within one major version; as long as we do not increment the major version, data can be read and restored. We strive to be fully backward compatible to all prior versions.
+
 
 ## <a name="contribute"></a>Contribute and Documentation
 

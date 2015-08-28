@@ -254,6 +254,17 @@ $ restic -r /tmp/backup list snapshots
 d369ccc7d126594950bf74f0a348d5d98d9e99f3215082eb69bf02dc9b3e464c
 {% endhighlight %}
 
+The `find` command searches for a given [pattern](http://golang.org/pkg/path/filepath/#Match) in the repository.
+
+```
+restic -r backup find test.txt
+debug log file restic.log
+debug enabled
+enter password for repository:
+found 1 matching entries in snapshot 196bc5760c909a7681647949e80e5448e276521489558525680acf1bd428af36
+  -rw-r--r--   501    20      5 2015-08-26 14:09:57 +0200 CEST path/to/test.txt
+```
+
 The `cat` command allows you to display the JSON representation of the objects or its raw content.
 
 {% highlight console %}

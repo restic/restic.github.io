@@ -23,7 +23,7 @@ The most basic strategy is to only save files that have changed since the last
 backup, this is where the term "incremental" backup comes from. This way,
 unmodified files are not stored again on subsequent backups. But what happens if
 just a small portion of a large file is modified? Using this strategy, the
-modified will be saved again, although most data is unchanged.
+modified file will be saved again, although most data is unchanged.
 
 A better idea is splitting a file into smaller fixed-size pieces (called
 "chunks" in the following) of e.g. 1MiB in size. When the backup program saves a
@@ -48,7 +48,7 @@ modern backup program.
 Restic works a bit different. It also operates on chunks of data from files and
 only upload new chunks, but uses a more sophisticated approach for splitting
 files into chunks called Content Defined Chunking. This means that a file is
-split into chunks based on the content of the chunks itself, instead of always
+split into chunks based on the content of the file itself, instead of always
 splitting after a fixed number of bytes.
 
 In the following, the function $$F(b_0 \dots b_{63})$$ returns a 64 bit
@@ -56,20 +56,20 @@ In the following, the function $$F(b_0 \dots b_{63})$$ returns a 64 bit
 of the byte sequence in the argument. This function can be efficiently computed
 as a [rolling hash](https://en.wikipedia.org/wiki/Rolling_hash), which means
 that $$F(b_1\dots b_{64})$$ can be computed without much overhead when
-$$F(b_0\dots b_{63})$$ is already known. Restic uses 64 byte as the "window
+$$F(b_0\dots b_{63})$$ is already known. Restic uses 64 bytes as the "window
 size" for the rolling hash.
 
 When restic saves a file, it first computes the Rabin Fingerprints for all 64
-byte sequences in the file are computed, so it starts by computing $$F(b_0\dots
-b_{63})$$, then $$F(b_1\dots b_{64})$$, then $$F(b_2\dots b_{65})$$ and so on.
-You get the idea. For each fingerprint, restic then tests if the lowest 21 bits
-are zero. If this is the case, restic found a new chunk boundary.
+byte sequences in the file, so it starts by computing $$F(b_0\dots b_{63})$$,
+then $$F(b_1\dots b_{64})$$, then $$F(b_2\dots b_{65})$$ and so on. You get the
+idea. For each fingerprint, restic then tests if the lowest 21 bits are zero.
+If this is the case, restic found a new chunk boundary.
 
 A chunk boundary therefore depends only on the last 64 byte before the boundary,
 in other words the end of a chunk depends on the last 64 bytes of a chunk. This
 means that for our example above where the user creates a backup of a file and then
 inserts bytes at the beginning of the file, restic will find the chunk boundary
-of the first chunk (which has some additional bytes inserted in the beginning).
+of the first chunk (which has some additional bytes inserted at the beginning).
 The same is true for the boundaries of all chunks in the file. So on a
 subsequent backup, restic will detect that the first chunk has changed, but all
 the other chunks from the file are the same.
@@ -97,8 +97,8 @@ of the file still yields the same chunk boundaries, shifted by 20 bytes:
 
 When restic computes a cryptographic hash (SHA-256) over the data in each chunk,
 it detects that the first chunk has been changed (we added 20 bytes, remember?),
-but the remaining three chunks are the same. Therefore, it only needs to save
-the changed first chunk.
+but the remaining three chunks have the same hash. Therefore, it only needs to
+save the changed first chunk.
 
 ### Examples
 
@@ -114,7 +114,7 @@ $ export RESTIC_REPOSITORY=/tmp/restic-test-repository RESTIC_PASSWORD=foo
 Please be aware that this way the password will be contained in your shell
 history.
 
-First, initialize a new repository in a temporary location:
+First, initialize a new repository at a temporary location:
 
 {% highlight console %}
 $ restic init
@@ -162,8 +162,8 @@ $ du -sh $RESTIC_REPOSITORY
 101M	/tmp/restic-test-repository
 {% endhighlight %}
 
-You can see that the repository has pretty much the same size as the data we're
-created a backup of.
+You can see that the repository has pretty much the same size as the data we
+have created a backup of.
 
 Now run the backup command again:
 
@@ -179,6 +179,8 @@ snapshot 0b870550 saved
 
 Again you can see that we've instructed restic to backup 100MiB of data, but in
 this case restic was much faster and finished the job in less than a second.
+Restic would have also be able to efficiently backup a file that was renamed or
+even moved to a different directory.
 
 Looking at the repository size you can probably already guess that it is still
 about 100MiB, since we didn't really add any new data:
@@ -249,7 +251,7 @@ large files) into small chunks, while being able to recognize the same chunks
 again when shifted or (slightly) modified.
 
 This enables restic to de-duplicate chunks so that each chunk of data is only
-saved in (and transmitted to) the backup location once. This enables not only
+(transmitted to and) stored at the backup location once. This enables not only
 *inter-file* de-duplication, but also the more relevant *inter-backup*
 de-duplication.
 

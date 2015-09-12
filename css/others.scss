@@ -1,0 +1,14 @@
+---
+---
+
+/* enable hyphenation */
+@mixin hyphens($value: "manual") {
+  @each $prefix in "", -webkit-, -moz-, -o-, -ms- {
+    #{$prefix}hyphens: $value;
+  }
+}
+
+p, li {
+  text-align: justify;
+  @include hyphens(auto);
+}

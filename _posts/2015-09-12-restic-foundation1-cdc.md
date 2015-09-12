@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Foundation - Introducing Content Defined Chunking (CDC)
-date: 2015-09-12 21:27
+date: 2015-09-12 21:41
 ---
 
 This post will explain Content Defined Chunking (CDC) and how it is used by
@@ -14,9 +14,10 @@ strategies have emerged to handle data in such a case.
 
 In a backup program, data de-duplication can be applied in two locations:
 Removing duplicate data from the same or different files within the same backup
-process (*inter-file de-duplication*), e.g. the initial backup, or removing it
-between several backups of the same data (*inter-backup de-duplication*). While
-the former is desirable to have, the latter is much more important.
+process (*inter-file de-duplication*), e.g. the during initial backup, or
+removing it between several backups that contain some of the same data
+(*inter-backup de-duplication*). While the former is desirable to have, the
+latter is much more important.
 
 ### Strategies
 
@@ -26,24 +27,24 @@ unmodified files are not stored again on subsequent backups. But what happens if
 just a small portion of a large file is modified? Using this strategy, the
 modified file will be saved again, although most of it did not change.
 
-A better idea is splitting files into smaller fixed-size pieces (called
-"chunks" in the following) of e.g. 1MiB in size. When the backup program saves a
-file to the backup location, it is sufficient to save all chunks and the list of
-chunks the file consists of. These chunks can be identified for example by the
-SHA-256 hash of the content, so duplicate chunks can be detected and saved only
-once. This way, for a file consisting of a large number of null bytes, only one
-chunk of null bytes needs to be stored.
+A better idea is to split files into smaller fixed-size pieces (called "chunks"
+in the following) of e.g. 1MiB in size. When the backup program saves a file to
+the backup location, it is sufficient to save all chunks and the list of chunks
+the file consists of. These chunks can be identified for example by the SHA-256
+hash of the content, so duplicate chunks can be detected and saved only once.
+This way, for a file containing of a large number of consecutive null bytes,
+only one chunk of null bytes needs to be stored.
 
 On a subsequent backup, unmodified files are not saved again because all chunks
 have already been saved before. Modified files on the other hand are split into
 chunks again, and new chunks are saved to the backup location.
 
 But what happens when the user adds a byte to the beginning of the file? The
-chunk-boundaries would shift by one byte, changing every chunk in the file.
-When the backup program now splits the file into fixed-sized chunks, it would
-(in most cases) end up with a list of different chunks, so it needs to save
-every chunk as a new chunk to the backup location. This is not satisfactory for
-a modern backup program.
+chunk boundaries (where a chunk ends and the next begins) would shift by one
+byte, changing every chunk in the file. When the backup program now splits the
+file into fixed-sized chunks, it would (in most cases) end up with a list of
+different chunks, so it needs to save every chunk as a new chunk to the backup
+location. This is not satisfactory for a modern backup program.
 
 ### Content Defined Chunking
 
@@ -69,16 +70,18 @@ case, restic found a new chunk boundary.
 
 A chunk boundary therefore depends only on the last 64 bytes before the
 boundary, in other words the end of a chunk depends on the last 64 bytes of a
-chunk. Returning to our earlier example, if a user creates a backup of a file
-and then inserts bytes at the beginning of the file, restic will find the same
-chunk boundary for the first chunk during the second run. The content of this
-first chunk will have changed (due to the additional bytes), but any subsequent
-chunk will remain identical thanks to the content-defined chunk boundaries.
+chunk. This especially means that chunks are variable-sized, within reasonable
+limits.
 
+Returning to our earlier example, if a user creates a backup of a file and then
+inserts bytes at the beginning of the file, restic will find the same chunk
+boundary for the first chunk during the second run. The content of this first
+chunk will have changed (due to the additional bytes), but any subsequent chunk
+will remain identical thanks to the content-defined chunk boundaries.
 
-Let's say our file consists of 4MiB data, and restic detects the following chunk
-boundaries, where "offset" is the byte offset of the last byte of the sliding
-window:
+Let's say our file consists of 4MiB of data, and restic detects the following
+chunk boundaries, where "offset" is the byte offset of the last byte of the
+sliding window:
 
 | Offset | Fingerprint|
 |-------:|-----------:|
@@ -180,9 +183,9 @@ snapshot 0b870550 saved
 {% endhighlight %}
 
 Again we've instructed restic to backup 100MiB of data, but in this case restic
-was much faster and finished the job in less than a second.  Restic would have
-also been able to efficiently backup a file that was renamed or even moved to a
-different directory by the way.
+was much faster and finished the job in less than a second.  By the way, restic
+would have also been able to efficiently backup a file that was renamed or even
+moved to a different directory.
 
 Looking at the repository size we can already guess that it is still about
 100MiB, since we didn't really add any new data:

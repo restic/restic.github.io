@@ -6,16 +6,16 @@ title: Foundation - Introducing Content Defined Chunking (CDC)
 This post will explain Content Defined Chunking (CDC) and how it is used by
 restic.
 
-Backup programs need to deal with large amounts of data, saving each file again
-to the backup location when a subsequent (usually called "incremental") backup
-is created is not efficient. Over time, different strategies have emerged to
-handle data in such a case.
+Backup programs need to deal with large volumes of changing data. Saving the
+whole copy of each file again to the backup location when a subsequent (usually
+called "incremental") backup is created is not efficient. Over time, different
+strategies have emerged to handle data in such a case.
 
-Data de-duplication can be applied twice in a backup program: Remove duplicate
-data from the same or different files within the same backup process
-(*inter-file de-duplication*), e.g. the initial backup, and between several
-backups of the same data (*inter-backup de-duplication). While the former is
-desirable to have, much more important is the latter de-duplication.
+In a backup program, data de-duplication can be applied in two locations:
+Removing duplicate data from the same or different files within the same backup
+process (*inter-file de-duplication*), e.g. the initial backup, or removing it
+between several backups of the same data (*inter-backup de-duplication*). While
+the former is desirable to have, the latter is much more important.
 
 ### Strategies
 
@@ -23,9 +23,9 @@ The most basic strategy is to only save files that have changed since the last
 backup, this is where the term "incremental" backup comes from. This way,
 unmodified files are not stored again on subsequent backups. But what happens if
 just a small portion of a large file is modified? Using this strategy, the
-modified file will be saved again, although most data is unchanged.
+modified file will be saved again, although most of it did not change.
 
-A better idea is splitting a file into smaller fixed-size pieces (called
+A better idea is splitting files into smaller fixed-size pieces (called
 "chunks" in the following) of e.g. 1MiB in size. When the backup program saves a
 file to the backup location, it is sufficient to save all chunks and the list of
 chunks the file consists of. These chunks can be identified for example by the
@@ -37,19 +37,20 @@ On a subsequent backup, unmodified files are not saved again because all chunks
 have already been saved before. Modified files on the other hand are split into
 chunks again, and new chunks are saved to the backup location.
 
-But what happens when the user adds a byte to the beginning of the file? When
-the backup program now splits the file into fixed-sized chunks, it would (in
-most cases) end up with a list of different chunks, so it needs to save all
-chunks as new chunks to the backup location. This is not satisfactory for a
-modern backup program.
+But what happens when the user adds a byte to the beginning of the file? The
+chunk-boundaries would shift by one byte, changing every chunk in the file.
+When the backup program now splits the file into fixed-sized chunks, it would
+(in most cases) end up with a list of different chunks, so it needs to save
+every chunk as a new chunk to the backup location. This is not satisfactory for
+a modern backup program.
 
 ### Content Defined Chunking
 
-Restic works a bit different. It also operates on chunks of data from files and
-only upload new chunks, but uses a more sophisticated approach for splitting
-files into chunks called Content Defined Chunking. This means that a file is
-split into chunks based on the content of the file itself, instead of always
-splitting after a fixed number of bytes.
+Restic works a bit differently. It also operates on chunks of data from files
+and only upload new chunks, but uses a more sophisticated approach for
+splitting files into chunks called *Content Defined Chunking*. It works by
+splitting a file into chunks based on the contents of the file, rather than
+always splitting after a fixed number of bytes.
 
 In the following, the function $$F(b_0 \dots b_{63})$$ returns a 64 bit
 [Rabin Fingerprint](https://en.wikipedia.org/wiki/Rabin_fingerprint)
@@ -61,18 +62,18 @@ size" for the rolling hash.
 
 When restic saves a file, it first computes the Rabin Fingerprints for all 64
 byte sequences in the file, so it starts by computing $$F(b_0\dots b_{63})$$,
-then $$F(b_1\dots b_{64})$$, then $$F(b_2\dots b_{65})$$ and so on. You get the
-idea. For each fingerprint, restic then tests if the lowest 21 bits are zero.
-If this is the case, restic found a new chunk boundary.
+then $$F(b_1\dots b_{64})$$, then $$F(b_2\dots b_{65})$$ and so on. For each
+fingerprint, restic then tests if the lowest 21 bits are zero. If this is the
+case, restic found a new chunk boundary.
 
-A chunk boundary therefore depends only on the last 64 byte before the boundary,
-in other words the end of a chunk depends on the last 64 bytes of a chunk. This
-means that for our example above where the user creates a backup of a file and then
-inserts bytes at the beginning of the file, restic will find the chunk boundary
-of the first chunk (which has some additional bytes inserted at the beginning).
-The same is true for the boundaries of all chunks in the file. So on a
-subsequent backup, restic will detect that the first chunk has changed, but all
-the other chunks from the file are the same.
+A chunk boundary therefore depends only on the last 64 bytes before the
+boundary, in other words the end of a chunk depends on the last 64 bytes of a
+chunk. Returning to our earlier example, if a user creates a backup of a file
+and then inserts bytes at the beginning of the file, restic will find the same
+chunk boundary for the first chunk during the second run. The content of this
+first chunk will have changed (due to the additional bytes), but any subsequent
+chunk will remain identical thanks to the content-defined chunk boundaries.
+
 
 Let's say our file consists of 4MiB data, and restic detects the following chunk
 boundaries, where "offset" is the byte offset of the last byte of the sliding
@@ -114,7 +115,7 @@ $ export RESTIC_REPOSITORY=/tmp/restic-test-repository RESTIC_PASSWORD=foo
 Please be aware that this way the password will be contained in your shell
 history.
 
-First, initialize a new repository at a temporary location:
+First, we'll initialize a new repository at a temporary location:
 
 {% highlight console %}
 $ restic init
@@ -125,15 +126,15 @@ the repository. Losing your password means that your data is
 irrecoverably lost.
 {% endhighlight %}
 
-At this point, nothing has been saved to the repository, so it is really small:
+At this point, nothing has been saved to the repository, so it is rather small:
 
 {% highlight console %}
 $ du -sh $RESTIC_REPOSITORY
 8.0K	/tmp/restic-test-repository
 {% endhighlight %}
 
-Next, create a new directory called `testdata` for our test, and in there a file
-with the name `file.raw` with 100MiB of random data:
+Next, we create a new directory called `testdata` for our test, containing a file
+`file.raw`, filled with 100MiB of random data:
 {% highlight console %}
 $ mkdir testdata
 $ dd if=/dev/urandom of=testdata/file.raw bs=1M count=100
@@ -142,7 +143,7 @@ $ dd if=/dev/urandom of=testdata/file.raw bs=1M count=100
 104857600 bytes (105 MB) copied, 5.76985 s, 18.2 MB/s
 {% endhighlight %}
 
-And backup this directory with restic (into the repository we specified via the
+We then backup this directory with restic (into the repository we specified via the
 environment variable `$RESTIC_REPOSITORY` above):
 
 {% highlight console %}
@@ -154,7 +155,7 @@ duration: 0:02, 44.21MiB/s
 snapshot 7452bd17 saved
 {% endhighlight %}
 
-You can see that restic created a backup with a size of 100MiB in about two
+We can see that restic created a backup with a size of 100MiB in about two
 seconds. We can verify this by checking the size of the repository again:
 
 {% highlight console %}
@@ -162,10 +163,10 @@ $ du -sh $RESTIC_REPOSITORY
 101M	/tmp/restic-test-repository
 {% endhighlight %}
 
-You can see that the repository has pretty much the same size as the data we
-have created a backup of.
+Not surprisingly, the repository is roughly the same size as the data we have
+created the backup of.
 
-Now run the backup command again:
+Now, we run the backup command for a second time:
 
 {% highlight console %}
 $ restic backup testdata
@@ -177,13 +178,13 @@ duration: 0:00, 20478.98MiB/s
 snapshot 0b870550 saved
 {% endhighlight %}
 
-Again you can see that we've instructed restic to backup 100MiB of data, but in
-this case restic was much faster and finished the job in less than a second.
-Restic would have also be able to efficiently backup a file that was renamed or
-even moved to a different directory.
+Again we've instructed restic to backup 100MiB of data, but in this case restic
+was much faster and finished the job in less than a second.  Restic would have
+also been able to efficiently backup a file that was renamed or even moved to a
+different directory by the way.
 
-Looking at the repository size you can probably already guess that it is still
-about 100MiB, since we didn't really add any new data:
+Looking at the repository size we can already guess that it is still about
+100MiB, since we didn't really add any new data:
 
 {% highlight console %}
 $ du -sh $RESTIC_REPOSITORY
@@ -242,7 +243,8 @@ $ du -sh $RESTIC_REPOSITORY
 
 This is expected because we've created a few new chunks when creating
 `file3.raw`, e.g. the first chunk will be saved again because a few bytes (the
-string `foo\n`) has been added. But restic managed the challenge quite well.
+string `foo\n`) were added. restic managed this challenge quite well and only
+introduced minor overhead for storing this incremental backup.
 
 ### Conclusion
 
@@ -250,10 +252,10 @@ Content Defined Chunking is a clever idea to split large amounts of data (e.g.
 large files) into small chunks, while being able to recognize the same chunks
 again when shifted or (slightly) modified.
 
-This enables restic to de-duplicate chunks so that each chunk of data is only
-(transmitted to and) stored at the backup location once. This enables not only
-*inter-file* de-duplication, but also the more relevant *inter-backup*
-de-duplication.
+This enables restic to de-duplicate data on the level of chunks so that each
+chunk of data is only stored at (and transmitted to) the backup location once.
+This gives us not only *inter-file* de-duplication, but also the more relevant
+*inter-backup* de-duplication.
 
 ### References
 

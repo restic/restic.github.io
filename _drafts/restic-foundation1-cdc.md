@@ -243,7 +243,7 @@ $ du -sh $RESTIC_REPOSITORY
 
 This is expected because we've created a few new chunks when creating
 `file3.raw`, e.g. the first chunk will be saved again because a few bytes (the
-string `foo\n`) were added. restic managed this challenge quite well and only
+string `foo\n`) were added. Restic managed this challenge quite well and only
 introduced minor overhead for storing this incremental backup.
 
 ### Conclusion

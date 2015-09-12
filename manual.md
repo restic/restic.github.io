@@ -1,6 +1,7 @@
 ---
 layout: page
 title: User Manual
+permalink: /manual/
 sitenav:
   - { anchor: "building-restic", title: "Building restic" }
   - { anchor: "initialize-repository", title: "Initialize a repository" }

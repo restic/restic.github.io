@@ -8,6 +8,7 @@ sitenav:
   - { anchor: "contact", title: "Contact" }
   - { anchor: "talks", title: "Talks" }
   - { anchor: "license", title: "License" }
+permalink: /
 ---
 
 <h1 class="page-title"><a name="about"></a>restic</h1>

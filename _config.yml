@@ -10,7 +10,7 @@ url: "https://restic.github.io" # the base hostname & protocol for your site
 github_username: restic
 
 # put blog entries below the path '/blog'
-permalink: /blog/:categories/:year/:month/:day/:title
+permalink: /blog/:categories/:year-:month-:day/:title
 
 # Build settings
 markdown: kramdown
@@ -18,3 +18,4 @@ markdown: kramdown
 # enable GitHub Flavoured Markdown
 kramdown:
   input: GFM
+  hard_wrap: false

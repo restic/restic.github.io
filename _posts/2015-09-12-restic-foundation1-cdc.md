@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Foundation - Introducing Content Defined Chunking (CDC)
+date: 2015-09-12 21:27
 ---
 
 This post will explain Content Defined Chunking (CDC) and how it is used by

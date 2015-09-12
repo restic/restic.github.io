@@ -60,6 +60,14 @@ The following talks will be or have been given about restic:
  * 2015-02-01: [Lightning Talk at FOSDEM 2015](https://www.youtube.com/watch?v=oM-MfeflUZ8&t=11m40s): A short introduction (with slightly outdated command line)
  * 2015-01-27: [Talk about restic at CCC Aachen](https://videoag.fsmpi.rwth-aachen.de/?view=player&lectureid=4442#content) (in German)
 
+## Blog
+
+For more information regarding restic development, have a look at [our blog](/blog). The latest posts are:
+
+{% for post in site.posts limit:3 %}
+  * {{ post.date | date_to_string }} &raquo; [ {{ post.title }} ]({{ post.url }})
+{% endfor %}
+
 ## <a name="license"></a>License
 
 Restic is licensed under "BSD 2-Clause License". You can find the complete text in the file `LICENSE`.

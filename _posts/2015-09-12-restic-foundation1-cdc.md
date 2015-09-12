@@ -14,7 +14,7 @@ strategies have emerged to handle data in such a case.
 
 In a backup program, data de-duplication can be applied in two locations:
 Removing duplicate data from the same or different files within the same backup
-process (*inter-file de-duplication*), e.g. the during initial backup, or
+process (*inter-file de-duplication*), e.g. during the initial backup, or
 removing it between several backups that contain some of the same data
 (*inter-backup de-duplication*). While the former is desirable to have, the
 latter is much more important.

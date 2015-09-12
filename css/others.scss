@@ -12,3 +12,15 @@ p, li {
   text-align: justify;
   @include hyphens(auto);
 }
+
+/* override standard hyde content box width */
+.content {
+  max-width: 45rem;
+}
+
+/* override table width */
+table {
+  width: auto;
+  text-align: center;
+  margin-left: 2em;
+}

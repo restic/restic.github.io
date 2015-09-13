@@ -8,7 +8,7 @@
   }
 }
 
-p, li {
+div.content p, div.content li {
   text-align: justify;
   @include hyphens(auto);
 }
@@ -23,4 +23,10 @@ table {
   width: auto;
   text-align: center;
   margin-left: 2em;
+}
+
+@media all and (max-width: 768px) {
+	.desktop {
+		display: none;
+	}
 }

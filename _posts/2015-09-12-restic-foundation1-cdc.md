@@ -54,13 +54,13 @@ splitting files into chunks called *Content Defined Chunking*. It works by
 splitting a file into chunks based on the contents of the file, rather than
 always splitting after a fixed number of bytes.
 
-In the following, the function $$F(b_0^2…b_{63})$$ returns a 64 bit
-[Rabin Fingerprint](https://en.wikipedia.org/wiki/Rabin_fingerprint)
-of the byte sequence in the argument. This function can be efficiently computed
-as a [rolling hash](https://en.wikipedia.org/wiki/Rolling_hash), which means
-that $$F(b_1 … b_{64})$$ can be computed without much overhead when
-$$F(b_0 … b_{63})$$ is already known. Restic uses 64 bytes as the "window
-size" for the rolling hash.
+In the following, the function $$F(b_0…b_{63})$$ returns a 64 bit [Rabin
+Fingerprint](https://en.wikipedia.org/wiki/Rabin_fingerprint) of the byte
+sequence in the argument (where $$b_i$$ is the byte at offset $$i$$). This
+function can be efficiently computed as a [rolling
+hash](https://en.wikipedia.org/wiki/Rolling_hash), which means that $$F(b_1 …
+b_{64})$$ can be computed without much overhead when $$F(b_0 … b_{63})$$ is
+already known. Restic uses 64 bytes as the "window size" for the rolling hash.
 
 When restic saves a file, it first computes the Rabin Fingerprints for all 64
 byte sequences in the file, so it starts by computing $$F(b_0 … b_{63})$$,

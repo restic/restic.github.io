@@ -20,3 +20,5 @@ markdown: kramdown
 kramdown:
   input: GFM
   hard_wrap: false
+  math_engine_opts:
+    preview: true

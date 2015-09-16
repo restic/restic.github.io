@@ -10,16 +10,13 @@ independently verify the integrity of the source code. In addition it is show
 how the automatically generated `tar.gz` files can be recreated with from the
 git repository.
 
-For all releases of restic, we sign the git release tag and publish a signature
-for the `tar.gz` file offered.
-
 ### Signing Git Tags
 
-In a git repository "tags" can be created which basically are just named
+In a git repository, "tags" can be created which basically are just named
 pointers to a commit, optionally annotated with other data. You can read about
 tags in detail [here](https://git-scm.com/book/en/v2/Git-Basics-Tagging).
-Creating a signed tag is really easy to do, just call `git tag` with
-`--annotate` and `--sign` (e.g. to sign the current commit as version 0.1.0):
+Creating a signed tag is really easy: just call `git tag` with `--annotate` and
+`--sign`, e.g. to sign the current commit as version 0.1.0 run:
 
 {% highlight console %}
 $ git tag --annotate --sign --message "v0.1.0" v0.1.0
@@ -41,12 +38,27 @@ gpg: Good signature from "Alexander Neumann <alexander@bumpern.de>"
 
 At the moment, we're in an early stage of the project and haven't setup a
 dedicated signing key so all releases are signed by
-[fd0](https://github.com/fd0).
+[fd0](https://github.com/fd0). In order to verify the integrity against this
+key you need to import it, e.g. from the public key servers:
+
+{% highlight console %}
+$ gpg --recv-key D3F7A907
+{% endhighlight %}
+
+Afterwards make sure to verify the fingerprint:
+
+{% highlight console %}
+$ gpg --fingerprint D3F7A907
+pub   rsa4096/D3F7A907 2014-11-01
+      Key fingerprint = CF8F 18F2 8445 7597 3F79  D4E1 91A6 868B D3F7 A907
+uid         [ultimate] Alexander Neumann <alexander@bumpern.de>
+sub   rsa4096/4043FDF1 2014-11-01
+{% endhighlight %}
 
 ### Recreating Automatically Generated Release Archives
 
 For each tag, we create a release on the [restic GitHub project
-page](https://github.com/restic/restic), you can see a list of all releases
+page](https://github.com/restic/restic). You can see a list of all releases
 [here](https://github.com/restic/restic/releases). For each release, GitHub
 offers an automatically generated `tar.gz` file containing the code for that
 release.
@@ -82,10 +94,10 @@ and attached to the release on GitHub.
 
 When you download the source code and the signature from the [GitHub Releases
 Page](https://github.com/restic/restic/releases), you can afterwards verify the
-signature as follows:
+signature as follows (provided the necessary GPG key has been retrieved):
 
 {% highlight console %}
-gpg --verify restic-0.1.0.tar.gz.asc 
+$ gpg --verify restic-0.1.0.tar.gz.asc 
 gpg: assuming signed data in 'restic-0.1.0.tar.gz'
 gpg: Signature made Mi 16 Sep 2015 23:33:11 CEST using RSA key ID D3F7A907
 gpg: Good signature from "Alexander Neumann <alexander@bumpern.de>"

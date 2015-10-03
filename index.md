@@ -33,7 +33,7 @@ A short recorded demo of restic:
 
 <script type="text/javascript" src="https://asciinema.org/a/anro1vq39k80ae7c46s9nj6bs.js" id="asciicast-23554" async></script>
 
-To learn more about restic, checkout the [user manual](/manual.html).
+To learn more about restic, checkout the [user manual](/manual/).
 
 ## <a name="compatibility"></a>Compatibility
 

@@ -80,6 +80,24 @@ Losing your password means that your data is irrecoverably lost.
 
 Remembering your password is important! If you lose it, you won't be able to access data stored in the repository.
 
+Attention, at the moment restic only supports real Windows console interaction. If you use emulation environments like
+[MSYS2](https://msys2.github.io/) or [Cygwin](https://www.cygwin.com/), which use terminals like Mintty, rxvt,
+you'll get an password error:
+
+{% highlight console %}
+$ restic -r /tmp/backup init
+enter password for repository: unable to read password: Das Handle ist ungültig.
+{% endhighlight %}
+
+You can workaround this by using a special tool called "winpty" (look [here](https://sourceforge.net/p/msys2/wiki/Porting/)
+and [here](https://github.com/rprichard/winpty) for detail information).
+
+{% highlight console %}
+# install winpty on MSYS2
+$ pacman -S winpty
+$ winpty restic -r /tmp/backup init
+{% endhighlight %}
+
 For automated backups, restic accepts the repository location in the environment variable `RESTIC_REPOSITORY` and also the password in the variable `RESTIC_PASSWORD`.
 
 ## <a name="create-snapshot"></a>Create a snapshot
@@ -98,7 +116,7 @@ snapshot 40dc1520 saved
 
 As you can see, restic created a backup of the directory and was pretty fast! The specific snapshot just created is identified by a sequence of hexadecimal characters, `40dc1520` in this case.
 
-If you run the command again, restic will create another snapshot of your data, but this time it's even faster. This is deduplication at work! 
+If you run the command again, restic will create another snapshot of your data, but this time it's even faster. This is deduplication at work!
 
 {% highlight console %}
 $ restic -r /tmp/backup backup ~/shared/work/web
@@ -111,7 +129,7 @@ duration: 0:00, 6572.38MiB/s
 snapshot 79766175 saved
 {% endhighlight %}
 
-You can even backup individual files in the same repository. 
+You can even backup individual files in the same repository.
 
 {% highlight console %}
 $ restic -r /tmp/backup backup ~/work.txt
@@ -143,7 +161,7 @@ Restoring a snapshot is as easy as it sounds, just use the following command to 
 
 {% highlight console %}
 $ restic -r /tmp/backup restore 79766175 --target ~/tmp/restore-work
-enter password for repository: 
+enter password for repository:
 restoring <Snapshot of [/home/user/work] at 2015-05-08 21:40:19.884408621 +0200 CEST> to /tmp/restore-work
 {% endhighlight %}
 
@@ -158,7 +176,7 @@ enter password for repository:
 ----------------------------------------------------------------------
 *eb78040b    username    kasimir   2015-08-12 13:29:57
 
-$ restic -r /tmp/backup key add 
+$ restic -r /tmp/backup key add
 enter password for repository:
 enter password for new key:
 enter password again:

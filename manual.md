@@ -226,6 +226,10 @@ Now serving /tmp/backup at /tmp/restic
 Don't forget to umount after quitting!
 {% endhighlight %}
 
+**Note**, Windows doesn't support FUSE directly. Projects like [dokan](http://dokan-dev.github.io/) fills the gap.
+We haven't tested it yet. We'd like to here your experience. Send us feedback. For setup information look at
+[dokan FUSE](https://github.com/dokan-dev/dokany/wiki/FUSE).
+
 ## <a name="sftp-repository"></a>Create an SFTP repository
 
 In order to backup data via SFTP, you must first set up a server with SSH and let it know your public key. Passwordless login is really important since restic fails to connect to the repository if the server prompts for credentials.

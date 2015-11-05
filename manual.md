@@ -226,9 +226,9 @@ Now serving /tmp/backup at /tmp/restic
 Don't forget to umount after quitting!
 {% endhighlight %}
 
-**Note**, Windows doesn't support FUSE directly. Projects like [dokan](http://dokan-dev.github.io/) fills the gap.
-We haven't tested it yet. We'd like to here your experience. Send us feedback. For setup information look at
-[dokan FUSE](https://github.com/dokan-dev/dokany/wiki/FUSE).
+Windows doesn't support FUSE directly. Projects like [dokan](http://dokan-dev.github.io/) try to fill the gap.
+We haven't tested it yet, but we'd like to hear about your experience. For setup information see
+[dokan FUSE in dokan's wiki](https://github.com/dokan-dev/dokany/wiki/FUSE).
 
 ## <a name="sftp-repository"></a>Create an SFTP repository
 

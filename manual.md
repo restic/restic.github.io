@@ -37,7 +37,11 @@ $ cd restic
 
 $ go run build.go
 [...]
+{% endhighlight %}
 
+Usage help is available:
+
+{% highlight console %}
 $ ./restic --help
 Usage:
   restic [OPTIONS] <command>
@@ -61,6 +65,30 @@ Available commands:
   restore    restore a snapshot
   snapshots  show snapshots
   version    display version
+{% endhighlight %}
+
+Subcommand-specific help is there too:
+
+{% highlight console %}
+$ ./restic backup --help
+Usage:
+  restic [OPTIONS] backup DIR/FILE [DIR/FILE] [...]
+
+The backup command creates a snapshot of a file or directory
+
+Application Options:
+  -r, --repo=        Repository directory to backup to/restore from
+      --cache-dir=   Directory to use as a local cache
+  -q, --quiet        Do not output comprehensive progress report (false)
+      --no-lock      Do not lock the repo, this allows some operations on read-only repos. (false)
+
+Help Options:
+  -h, --help         Show this help message
+
+[backup command options]
+      -p, --parent=  use this parent snapshot (default: last snapshot in repo that has the same target)
+      -f, --force    Force re-reading the target. Overrides the "parent" flag
+      -e, --exclude= Exclude a pattern (can be specified multiple times)
 {% endhighlight %}
 
 ## <a name="initialize-repository"></a>Initialize a repository

@@ -33,4 +33,13 @@
 
   <!-- scripts -->
   <script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <!-- redirect to HTTPS if necessary -->
+  <script>
+    var host = 'restic.github.io';
+    if (window.location.host == host && window.location.protocol != 'https:') { 
+      window.location.protocol = 'https:';
+    }
+  </script>
 </head>

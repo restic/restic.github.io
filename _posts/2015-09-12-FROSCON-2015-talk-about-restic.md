@@ -15,4 +15,4 @@ If you do so, please [leave feedback](https://frab.froscon.org/en/froscon2015/pu
 
 The recording is embedded below:
 
-<iframe width="853" height="480" src="//media.ccc.de/browse/conferences/froscon/2015/froscon2015-1515-a_solution_to_the_backup_inconvenience/oembed.html" frameborder="0" allowfullscreen></iframe>
+<iframe width="853" height="480" src="//media.ccc.de/v/froscon2015-1515-a_solution_to_the_backup_inconvenience/oembed" frameborder="0" allowfullscreen></iframe>

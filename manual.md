@@ -288,10 +288,10 @@ $ export AWS_SECRET_ACCESS_KEY=<MY_SECRET_ACCESS_KEY>
 You can then easily initialize a repository that uses your Amazon S3 as a backend.
 
 {% highlight console %}
-$ restic -r s3://region_name/bucket_name init
+$ restic -r s3://s3.amazonaws.com/bucket_name init
 enter password for new backend:
 enter password again:
-created restic backend eefee03bbd at s3://region_name/bucket_name
+created restic backend eefee03bbd at s3://s3.amazonaws.com/bucket_name
 Please note that knowledge of your password is required to access the repository.
 Losing your password means that your data is irrecoverably lost.
 {% endhighlight %}

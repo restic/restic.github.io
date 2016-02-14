@@ -296,6 +296,8 @@ Please note that knowledge of your password is required to access the repository
 Losing your password means that your data is irrecoverably lost.
 {% endhighlight %}
 
+For an S3-compatible repository without TLS available, use the alternative URI protocol `s3:http://server:port/bucket_name`.
+
 ## <a name="browse-repository-objects"></a>Under the hood: Browse repository objects
 
 Internally, a repository stores data of several different types described in the [design documentation](https://github.com/restic/restic/blob/master/doc/Design.md). You can `list` objects such as blobs, packs, index, snapshots, keys or locks with the following command:

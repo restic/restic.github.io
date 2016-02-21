@@ -1,4 +1,4 @@
---
+---
 layout: default
 sitenav:
   - { anchor: "about", title: "About" }

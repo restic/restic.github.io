@@ -9,7 +9,6 @@
 
     <nav class="sidebar-nav">
       <a class="sidebar-nav-item{% if page.url == site.baseurl  %} active{% endif %}{% if page.url == '/index.html' %} active{% endif %}" href="{{ site.baseurl }}">Home</a>
-
       {% comment %}
         The code below dynamically generates a sidebar nav of pages with
         `layout: page` in the front-matter. See readme for usage.
@@ -22,6 +21,9 @@
           {% endif %}
         {% endif %}
       {% endfor %}
+
+      <a class="sidebar-nav-item" href="https://restic.readthedocs.org/en/v0.1.0-doc/">Docs</a>
+      <a class="sidebar-nav-item" href="https://restic.readthedocs.org/en/latest/">Docs (dev)</a>
     </nav>
 
     <nav class="sidebar-nav secondary-nav">

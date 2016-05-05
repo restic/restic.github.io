@@ -35,7 +35,7 @@ readable in plain text.
 
 Additionally we've enabled the awesome
 [Read the Docs](https://readthedocs.org/) service, which allows reading the
-documentation at <https://restic.readthedocs.org/>. In the bottom left corner
+documentation at <https://restic.readthedocs.io/>. In the bottom left corner
 is a small menu which allows switching to a specific version of the
-documentation. The URL <https://restic.readthedocs.org/en/latest/> will always
+documentation. The URL <https://restic.readthedocs.io/en/latest/> will always
 return the docs for the latest master branch.

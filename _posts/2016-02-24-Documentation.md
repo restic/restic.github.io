@@ -18,12 +18,14 @@ documentation in Markdown and locally preview it before publishing. The
 documentation can be viewed locally by running the following command from
 within the repository:
 
-    $ mkdocs serve
-    INFO    -  Building documentation... 
-    INFO    -  Cleaning site directory 
-    [I 160224 21:04:49 server:271] Serving on http://127.0.0.1:8000
-    [I 160224 21:04:49 handlers:58] Start watching changes
-    [I 160224 21:04:49 handlers:60] Start detecting changes
+{% highlight console %}
+$ mkdocs serve
+INFO    -  Building documentation... 
+INFO    -  Cleaning site directory 
+[I 160224 21:04:49 server:271] Serving on http://127.0.0.1:8000
+[I 160224 21:04:49 handlers:58] Start watching changes
+[I 160224 21:04:49 handlers:60] Start detecting changes
+{% endhighlight %}
 
 Afterwards just visit the printed URL. If you pass the additional parameter
 `--livereload`, the browser will automatically refresh after a files was

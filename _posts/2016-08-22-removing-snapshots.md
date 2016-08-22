@@ -20,7 +20,7 @@ For all of the following commands the repository location and password have
 been written to the environment variables `RESTIC_REPOSITORY` and
 `RESTIC_PASSWORD` so that the commands can be run directly. This is how to do
 it:
-{% highlight console %}
+{% highlight shell %}
 $ export RESTIC_REPOSITORY=/tmp RESTIC_PASSWORD=geheim
 {% endhighlight %}
 
@@ -33,7 +33,7 @@ the code from the current (as of 22 August 2016) master branch yourself.
 Let's suppose you have a restic repository and ran a backup at 5:00 o'clock in the morning each day this year.
 Running the `snapshots` command shows you around 235 snapshots:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic snapshots
 ID        Date                 Host        Directory
 ----------------------------------------------------------------------
@@ -50,7 +50,7 @@ The `forget` command allows removing snapshots. When a snapshot ID like
 `6e001a58` for the first snapshot made on 1 January 2016 is specified as the
 argument of the command, that snapshot is deleted from the repository:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic forget 6e001a58
 removed snapshot 6e001a58
 
@@ -68,7 +68,7 @@ was present when the snapshot was made. Removing a snapshot does not remove the
 data from the repository, only when the command `prune` is run, unreferenced
 (and therefore unneeded) data is removed:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic prune
 counting files in repo
 building new index for repo
@@ -98,7 +98,7 @@ original pack file. This process can also take some time.
 Removing a single snapshot is useful, but not very convenient. Let's check out
 the specific parameters of the `forget` command:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic forget --help
 [...]
 Help Options:
@@ -126,7 +126,7 @@ snapshots and removes those that do not match the policy.
 Let's try this with a simple policy: Restic should keep the last seven daily
 snapshots, eight weekly backups and only a monthly backup for 24 months:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic forget --dry-run --keep-daily 7 --keep-weekly 8 --keep-monthly 24
 keep 21 snapshots:
 ID        Date                 Host        Directory
@@ -168,7 +168,7 @@ ee891602  2016-01-03 04:00:00  mopped      /home/fd0/tmp/data
 You can see that when this command is run without `--dry-run`, restic will
 remove a lot of snapshots (213 of 235):
 
-{% highlight console %}
+{% highlight shell %}
 $ restic forget --keep-daily 7 --keep-weekly 8 --keep-monthly 24
 snapshots for host mopped, directories /home/fd0/tmp/data:
 
@@ -202,7 +202,7 @@ done
 
 Afterwards, the list of snapshots is a lot shorter:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic snapshots
 ID        Date                 Host        Directory
 ----------------------------------------------------------------------
@@ -251,7 +251,7 @@ removal. It will then remove all the snapshots for these hours from the list.
 
 It's easier than it sounds. Consider the following snapshots in a repo:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic snapshots
 ID        Date                 Host        Directory
 ----------------------------------------------------------------------
@@ -273,7 +273,7 @@ means that `98fb9f00` is kept, and `d221a465` is removed. The next hour that
 has a snapshot starts at 18:00:00, the one after that at 05:00:00, and so on.
 This is the result of running `forget --keep-hourly 4`:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic forget --dry-run --keep-hourly 4
 keep 21 snapshots:
 ID        Date                 Host        Directory

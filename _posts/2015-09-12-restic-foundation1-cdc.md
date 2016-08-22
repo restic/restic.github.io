@@ -112,7 +112,7 @@ fun with restic. For the sake of simplicity, we'll save the repository location
 and the password in environment variables (`RESTIC_REPOSITORY` and
 `RESTIC_PASSWORD`) so that we don't have to type the password for every action:
 
-{% highlight console %}
+{% highlight shell %}
 $ export RESTIC_REPOSITORY=/tmp/restic-test-repository RESTIC_PASSWORD=foo
 {% endhighlight %}
 
@@ -121,7 +121,7 @@ history.
 
 First, we'll initialize a new repository at a temporary location:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic init
 created restic backend 2b310bf378 at /tmp/restic-test-repository
 
@@ -132,14 +132,14 @@ irrecoverably lost.
 
 At this point, nothing has been saved to the repository, so it is rather small:
 
-{% highlight console %}
+{% highlight shell %}
 $ du -sh $RESTIC_REPOSITORY
 8.0K	/tmp/restic-test-repository
 {% endhighlight %}
 
 Next, we create a new directory called `testdata` for our test, containing a file
 `file.raw`, filled with 100MiB of random data:
-{% highlight console %}
+{% highlight shell %}
 $ mkdir testdata
 $ dd if=/dev/urandom of=testdata/file.raw bs=1M count=100
 100+0 records in
@@ -150,7 +150,7 @@ $ dd if=/dev/urandom of=testdata/file.raw bs=1M count=100
 We then backup this directory with restic (into the repository we specified via the
 environment variable `$RESTIC_REPOSITORY` above):
 
-{% highlight console %}
+{% highlight shell %}
 $ restic backup testdata
 scan [/home/fd0/tmp/testdata]
 scanned 1 directories, 1 files in 0:00
@@ -162,7 +162,7 @@ snapshot 7452bd17 saved
 We can see that restic created a backup with a size of 100MiB in about two
 seconds. We can verify this by checking the size of the repository again:
 
-{% highlight console %}
+{% highlight shell %}
 $ du -sh $RESTIC_REPOSITORY
 101M	/tmp/restic-test-repository
 {% endhighlight %}
@@ -172,7 +172,7 @@ created the backup of.
 
 Now, we run the backup command for a second time:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic backup testdata
 using parent snapshot 7452bd17
 scan [/home/fd0/tmp/testdata]
@@ -190,7 +190,7 @@ moved to a different directory.
 Looking at the repository size we can already guess that it is still about
 100MiB, since we didn't really add any new data:
 
-{% highlight console %}
+{% highlight shell %}
 $ du -sh $RESTIC_REPOSITORY
 101M	/tmp/restic-test-repository
 {% endhighlight %}
@@ -199,7 +199,7 @@ When we make a copy of the file `file.raw` and backup the same repository again,
 restic recognises that all data is already known and the repository size does
 not grow at all, although the directory `testdata` now contains 200MiB of data:
 
-{% highlight console %}
+{% highlight shell %}
 $ cp testdata/file.raw testdata/file2.raw
 
 $ du -sh testdata
@@ -221,7 +221,7 @@ Now for the final demonstration we'll create a new file `file3.raw` which is a
 nasty combination of the 100MiB we've initially saved in `file.raw` so that
 `testdata` now contains about 400MiB:
 
-{% highlight console %}
+{% highlight shell %}
 $ (echo foo; cat testdata/file.raw; echo bar; cat testdata/file.raw; echo baz) \
   > testdata/file3.raw
 
@@ -232,7 +232,7 @@ $ du -sh testdata
 We'll create a new backup of the directory with restic and observe that the
 repository has grown by about 10MiB:
 
-{% highlight console %}
+{% highlight shell %}
 $ restic backup testdata
 using parent snapshot ab8e0047
 scan [/home/fd0/tmp/testdata]

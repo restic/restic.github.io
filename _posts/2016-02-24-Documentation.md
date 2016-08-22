@@ -18,7 +18,7 @@ documentation in Markdown and locally preview it before publishing. The
 documentation can be viewed locally by running the following command from
 within the repository:
 
-{% highlight console %}
+{% highlight shell %}
 $ mkdocs serve
 INFO    -  Building documentation... 
 INFO    -  Cleaning site directory 

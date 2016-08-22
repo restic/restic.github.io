@@ -20,9 +20,8 @@ For all of the following commands the repository location and password have
 been written to the environment variables `RESTIC_REPOSITORY` and
 `RESTIC_PASSWORD` so that the commands can be run directly. This is how to do
 it:
-{% highlight console %}
-$ export RESTIC_REPOSITORY=/tmp RESTIC_PASSWORD=geheim
-{% endhighlight %}
+
+    $ export RESTIC_REPOSITORY=/tmp RESTIC_PASSWORD=geheim
 
 Please note that this feature is not yet contained in any released version of
 restic, you need to [compile](https://github.com/restic/restic#build-restic)
@@ -33,58 +32,52 @@ the code from the current (as of 22 August 2016) master branch yourself.
 Let's suppose you have a restic repository and ran a backup at 5:00 o'clock in the morning each day this year.
 Running the `snapshots` command shows you around 235 snapshots:
 
-{% highlight console %}
-$ restic snapshots
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-6e001a58  2016-01-01 04:00:00  mopped      /home/fd0/tmp/data
-62a86121  2016-01-02 04:00:00  mopped      /home/fd0/tmp/data
-ee891602  2016-01-03 04:00:00  mopped      /home/fd0/tmp/data
-[...]
-d0267dbb  2016-08-20 05:00:00  mopped      /home/fd0/tmp/data
-6261b96f  2016-08-21 05:00:00  mopped      /home/fd0/tmp/data
-5116cfdc  2016-08-22 05:00:00  mopped      /home/fd0/tmp/data
-{% endhighlight %}
+    $ restic snapshots
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    6e001a58  2016-01-01 04:00:00  mopped      /home/fd0/tmp/data
+    62a86121  2016-01-02 04:00:00  mopped      /home/fd0/tmp/data
+    ee891602  2016-01-03 04:00:00  mopped      /home/fd0/tmp/data
+    [...]
+    d0267dbb  2016-08-20 05:00:00  mopped      /home/fd0/tmp/data
+    6261b96f  2016-08-21 05:00:00  mopped      /home/fd0/tmp/data
+    5116cfdc  2016-08-22 05:00:00  mopped      /home/fd0/tmp/data
 
 The `forget` command allows removing snapshots. When a snapshot ID like
 `6e001a58` for the first snapshot made on 1 January 2016 is specified as the
 argument of the command, that snapshot is deleted from the repository:
 
-{% highlight console %}
-$ restic forget 6e001a58
-removed snapshot 6e001a58
+    $ restic forget 6e001a58
+    removed snapshot 6e001a58
 
-$ restic snapshots
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-62a86121  2016-01-02 04:00:00  mopped      /home/fd0/tmp/data
-ee891602  2016-01-03 04:00:00  mopped      /home/fd0/tmp/data
-a07ffe20  2016-01-04 04:00:00  mopped      /home/fd0/tmp/data
-[...]
-{% endhighlight %}
+    $ restic snapshots
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    62a86121  2016-01-02 04:00:00  mopped      /home/fd0/tmp/data
+    ee891602  2016-01-03 04:00:00  mopped      /home/fd0/tmp/data
+    a07ffe20  2016-01-04 04:00:00  mopped      /home/fd0/tmp/data
+    [...]
 
 The snapshot in a restic repository is really just a pointer to the data that
 was present when the snapshot was made. Removing a snapshot does not remove the
 data from the repository, only when the command `prune` is run, unreferenced
 (and therefore unneeded) data is removed:
 
-{% highlight console %}
-$ restic prune
-counting files in repo
-building new index for repo
-[0:00] 100.00%  1 / 1 files
-repository contains 1 packs (8 blobs) with 3.003 MiB bytes
-processed 8 blobs: 0 duplicate blobs, 0B duplicate
-load all snapshots
-find data that is still in use for 234 snapshots
-[0:00] 100.00%  234 / 234 snapshots
-found 8 of 8 data blobs still in use
-will rewrite 0 packs
-creating new index
-[0:00] 100.00%  2 / 2 files
-saved new index as 14a7838d
-done
-{% endhighlight %}
+    $ restic prune
+    counting files in repo
+    building new index for repo
+    [0:00] 100.00%  1 / 1 files
+    repository contains 1 packs (8 blobs) with 3.003 MiB bytes
+    processed 8 blobs: 0 duplicate blobs, 0B duplicate
+    load all snapshots
+    find data that is still in use for 234 snapshots
+    [0:00] 100.00%  234 / 234 snapshots
+    found 8 of 8 data blobs still in use
+    will rewrite 0 packs
+    creating new index
+    [0:00] 100.00%  2 / 2 files
+    saved new index as 14a7838d
+    done
 
 In this example `prune` was finished quickly, but it can take a longer time to
 check the references for each blob of data. Restic combines several blobs of
@@ -98,22 +91,20 @@ original pack file. This process can also take some time.
 Removing a single snapshot is useful, but not very convenient. Let's check out
 the specific parameters of the `forget` command:
 
-{% highlight console %}
-$ restic forget --help
-[...]
-Help Options:
-  -h, --help              Show this help message
+    $ restic forget --help
+    [...]
+    Help Options:
+      -h, --help              Show this help message
 
-[forget command options]
-      -l, --keep-last=    keep the last n snapshots
-      -H, --keep-hourly=  keep the last n hourly snapshots
-      -d, --keep-daily=   keep the last n daily snapshots
-      -w, --keep-weekly=  keep the last n weekly snapshots
-      -m, --keep-monthly= keep the last n monthly snapshots
-      -y, --keep-yearly=  keep the last n yearly snapshots
-          --hostname=     only forget snapshots for the given hostname
-      -n, --dry-run       do not delete anything, just print what would be done
-{% endhighlight %}
+    [forget command options]
+          -l, --keep-last=    keep the last n snapshots
+          -H, --keep-hourly=  keep the last n hourly snapshots
+          -d, --keep-daily=   keep the last n daily snapshots
+          -w, --keep-weekly=  keep the last n weekly snapshots
+          -m, --keep-monthly= keep the last n monthly snapshots
+          -y, --keep-yearly=  keep the last n yearly snapshots
+              --hostname=     only forget snapshots for the given hostname
+          -n, --dry-run       do not delete anything, just print what would be done
 
 The most important parameter is `--dry-run`, which will only print the
 snapshots that would be removed according to the policy set by the other
@@ -126,108 +117,102 @@ snapshots and removes those that do not match the policy.
 Let's try this with a simple policy: Restic should keep the last seven daily
 snapshots, eight weekly backups and only a monthly backup for 24 months:
 
-{% highlight console %}
-$ restic forget --dry-run --keep-daily 7 --keep-weekly 8 --keep-monthly 24
-keep 21 snapshots:
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-5116cfdc  2016-08-22 05:00:00  mopped      /home/fd0/tmp/data
-6261b96f  2016-08-21 05:00:00  mopped      /home/fd0/tmp/data
-d0267dbb  2016-08-20 05:00:00  mopped      /home/fd0/tmp/data
-e7e18480  2016-08-19 05:00:00  mopped      /home/fd0/tmp/data
-b2fd97b2  2016-08-18 05:00:00  mopped      /home/fd0/tmp/data
-9743b40d  2016-08-17 05:00:00  mopped      /home/fd0/tmp/data
-3ef3007b  2016-08-16 05:00:00  mopped      /home/fd0/tmp/data
-3c3f7ad4  2016-08-15 05:00:00  mopped      /home/fd0/tmp/data
-b471d6eb  2016-08-14 05:00:00  mopped      /home/fd0/tmp/data
-0f2f3b55  2016-08-07 05:00:00  mopped      /home/fd0/tmp/data
-47fe0a0f  2016-07-31 05:00:00  mopped      /home/fd0/tmp/data
-0d7b57eb  2016-07-24 05:00:00  mopped      /home/fd0/tmp/data
-c94ee5ac  2016-07-17 05:00:00  mopped      /home/fd0/tmp/data
-fc48f6b6  2016-07-10 05:00:00  mopped      /home/fd0/tmp/data
-5e9fe6d2  2016-07-03 05:00:00  mopped      /home/fd0/tmp/data
-774c5721  2016-06-26 05:00:00  mopped      /home/fd0/tmp/data
-d9b9c5b2  2016-05-31 05:00:00  mopped      /home/fd0/tmp/data
-446e6030  2016-04-30 05:00:00  mopped      /home/fd0/tmp/data
-6f86935a  2016-03-31 05:00:00  mopped      /home/fd0/tmp/data
-1722682f  2016-02-29 04:00:00  mopped      /home/fd0/tmp/data
-dd2bbbf9  2016-01-31 04:00:00  mopped      /home/fd0/tmp/data
+    $ restic forget --dry-run --keep-daily 7 --keep-weekly 8 --keep-monthly 24
+    keep 21 snapshots:
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    5116cfdc  2016-08-22 05:00:00  mopped      /home/fd0/tmp/data
+    6261b96f  2016-08-21 05:00:00  mopped      /home/fd0/tmp/data
+    d0267dbb  2016-08-20 05:00:00  mopped      /home/fd0/tmp/data
+    e7e18480  2016-08-19 05:00:00  mopped      /home/fd0/tmp/data
+    b2fd97b2  2016-08-18 05:00:00  mopped      /home/fd0/tmp/data
+    9743b40d  2016-08-17 05:00:00  mopped      /home/fd0/tmp/data
+    3ef3007b  2016-08-16 05:00:00  mopped      /home/fd0/tmp/data
+    3c3f7ad4  2016-08-15 05:00:00  mopped      /home/fd0/tmp/data
+    b471d6eb  2016-08-14 05:00:00  mopped      /home/fd0/tmp/data
+    0f2f3b55  2016-08-07 05:00:00  mopped      /home/fd0/tmp/data
+    47fe0a0f  2016-07-31 05:00:00  mopped      /home/fd0/tmp/data
+    0d7b57eb  2016-07-24 05:00:00  mopped      /home/fd0/tmp/data
+    c94ee5ac  2016-07-17 05:00:00  mopped      /home/fd0/tmp/data
+    fc48f6b6  2016-07-10 05:00:00  mopped      /home/fd0/tmp/data
+    5e9fe6d2  2016-07-03 05:00:00  mopped      /home/fd0/tmp/data
+    774c5721  2016-06-26 05:00:00  mopped      /home/fd0/tmp/data
+    d9b9c5b2  2016-05-31 05:00:00  mopped      /home/fd0/tmp/data
+    446e6030  2016-04-30 05:00:00  mopped      /home/fd0/tmp/data
+    6f86935a  2016-03-31 05:00:00  mopped      /home/fd0/tmp/data
+    1722682f  2016-02-29 04:00:00  mopped      /home/fd0/tmp/data
+    dd2bbbf9  2016-01-31 04:00:00  mopped      /home/fd0/tmp/data
 
-remove 213 snapshots:
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-f3da855f  2016-08-13 05:00:00  mopped      /home/fd0/tmp/data
-347274f4  2016-08-12 05:00:00  mopped      /home/fd0/tmp/data
-f314dd1f  2016-08-11 05:00:00  mopped      /home/fd0/tmp/data
-[...]
-a07ffe20  2016-01-04 04:00:00  mopped      /home/fd0/tmp/data
-ee891602  2016-01-03 04:00:00  mopped      /home/fd0/tmp/data
-62a86121  2016-01-02 04:00:00  mopped      /home/fd0/tmp/data
-{% endhighlight %}
+    remove 213 snapshots:
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    f3da855f  2016-08-13 05:00:00  mopped      /home/fd0/tmp/data
+    347274f4  2016-08-12 05:00:00  mopped      /home/fd0/tmp/data
+    f314dd1f  2016-08-11 05:00:00  mopped      /home/fd0/tmp/data
+    [...]
+    a07ffe20  2016-01-04 04:00:00  mopped      /home/fd0/tmp/data
+    ee891602  2016-01-03 04:00:00  mopped      /home/fd0/tmp/data
+    62a86121  2016-01-02 04:00:00  mopped      /home/fd0/tmp/data
 
 You can see that when this command is run without `--dry-run`, restic will
 remove a lot of snapshots (213 of 235):
 
-{% highlight console %}
-$ restic forget --keep-daily 7 --keep-weekly 8 --keep-monthly 24
-snapshots for host mopped, directories /home/fd0/tmp/data:
+    $ restic forget --keep-daily 7 --keep-weekly 8 --keep-monthly 24
+    snapshots for host mopped, directories /home/fd0/tmp/data:
 
-keep 21 snapshots:
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-5116cfdc  2016-08-22 05:00:00  mopped      /home/fd0/tmp/data
-6261b96f  2016-08-21 05:00:00  mopped      /home/fd0/tmp/data
-d0267dbb  2016-08-20 05:00:00  mopped      /home/fd0/tmp/data
-[...]
+    keep 21 snapshots:
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    5116cfdc  2016-08-22 05:00:00  mopped      /home/fd0/tmp/data
+    6261b96f  2016-08-21 05:00:00  mopped      /home/fd0/tmp/data
+    d0267dbb  2016-08-20 05:00:00  mopped      /home/fd0/tmp/data
+    [...]
 
-remove 213 snapshots:
-[...]
+    remove 213 snapshots:
+    [...]
 
-$ restic prune
-counting files in repo
-building new index for repo
-[0:00] 100.00%  1 / 1 files
-repository contains 1 packs (8 blobs) with 3.003 MiB bytes
-processed 8 blobs: 0 duplicate blobs, 0B duplicate
-load all snapshots
-find data that is still in use for 21 snapshots
-[0:00] 100.00%  21 / 21 snapshots
-found 8 of 8 data blobs still in use
-will rewrite 0 packs
-creating new index
-[0:00] 50.00%  1 / 2 files
-saved new index as 504caa39
-done
-{% endhighlight %}
+    $ restic prune
+    counting files in repo
+    building new index for repo
+    [0:00] 100.00%  1 / 1 files
+    repository contains 1 packs (8 blobs) with 3.003 MiB bytes
+    processed 8 blobs: 0 duplicate blobs, 0B duplicate
+    load all snapshots
+    find data that is still in use for 21 snapshots
+    [0:00] 100.00%  21 / 21 snapshots
+    found 8 of 8 data blobs still in use
+    will rewrite 0 packs
+    creating new index
+    [0:00] 50.00%  1 / 2 files
+    saved new index as 504caa39
+    done
 
 Afterwards, the list of snapshots is a lot shorter:
 
-{% highlight console %}
-$ restic snapshots
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-dd2bbbf9  2016-01-31 04:00:00  mopped      /home/fd0/tmp/data
-1722682f  2016-02-29 04:00:00  mopped      /home/fd0/tmp/data
-6f86935a  2016-03-31 05:00:00  mopped      /home/fd0/tmp/data
-446e6030  2016-04-30 05:00:00  mopped      /home/fd0/tmp/data
-d9b9c5b2  2016-05-31 05:00:00  mopped      /home/fd0/tmp/data
-774c5721  2016-06-26 05:00:00  mopped      /home/fd0/tmp/data
-5e9fe6d2  2016-07-03 05:00:00  mopped      /home/fd0/tmp/data
-fc48f6b6  2016-07-10 05:00:00  mopped      /home/fd0/tmp/data
-c94ee5ac  2016-07-17 05:00:00  mopped      /home/fd0/tmp/data
-0d7b57eb  2016-07-24 05:00:00  mopped      /home/fd0/tmp/data
-47fe0a0f  2016-07-31 05:00:00  mopped      /home/fd0/tmp/data
-0f2f3b55  2016-08-07 05:00:00  mopped      /home/fd0/tmp/data
-b471d6eb  2016-08-14 05:00:00  mopped      /home/fd0/tmp/data
-3c3f7ad4  2016-08-15 05:00:00  mopped      /home/fd0/tmp/data
-3ef3007b  2016-08-16 05:00:00  mopped      /home/fd0/tmp/data
-9743b40d  2016-08-17 05:00:00  mopped      /home/fd0/tmp/data
-b2fd97b2  2016-08-18 05:00:00  mopped      /home/fd0/tmp/data
-e7e18480  2016-08-19 05:00:00  mopped      /home/fd0/tmp/data
-d0267dbb  2016-08-20 05:00:00  mopped      /home/fd0/tmp/data
-6261b96f  2016-08-21 05:00:00  mopped      /home/fd0/tmp/data
-5116cfdc  2016-08-22 05:00:00  mopped      /home/fd0/tmp/data
-{% endhighlight %}
+    $ restic snapshots
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    dd2bbbf9  2016-01-31 04:00:00  mopped      /home/fd0/tmp/data
+    1722682f  2016-02-29 04:00:00  mopped      /home/fd0/tmp/data
+    6f86935a  2016-03-31 05:00:00  mopped      /home/fd0/tmp/data
+    446e6030  2016-04-30 05:00:00  mopped      /home/fd0/tmp/data
+    d9b9c5b2  2016-05-31 05:00:00  mopped      /home/fd0/tmp/data
+    774c5721  2016-06-26 05:00:00  mopped      /home/fd0/tmp/data
+    5e9fe6d2  2016-07-03 05:00:00  mopped      /home/fd0/tmp/data
+    fc48f6b6  2016-07-10 05:00:00  mopped      /home/fd0/tmp/data
+    c94ee5ac  2016-07-17 05:00:00  mopped      /home/fd0/tmp/data
+    0d7b57eb  2016-07-24 05:00:00  mopped      /home/fd0/tmp/data
+    47fe0a0f  2016-07-31 05:00:00  mopped      /home/fd0/tmp/data
+    0f2f3b55  2016-08-07 05:00:00  mopped      /home/fd0/tmp/data
+    b471d6eb  2016-08-14 05:00:00  mopped      /home/fd0/tmp/data
+    3c3f7ad4  2016-08-15 05:00:00  mopped      /home/fd0/tmp/data
+    3ef3007b  2016-08-16 05:00:00  mopped      /home/fd0/tmp/data
+    9743b40d  2016-08-17 05:00:00  mopped      /home/fd0/tmp/data
+    b2fd97b2  2016-08-18 05:00:00  mopped      /home/fd0/tmp/data
+    e7e18480  2016-08-19 05:00:00  mopped      /home/fd0/tmp/data
+    d0267dbb  2016-08-20 05:00:00  mopped      /home/fd0/tmp/data
+    6261b96f  2016-08-21 05:00:00  mopped      /home/fd0/tmp/data
+    5116cfdc  2016-08-22 05:00:00  mopped      /home/fd0/tmp/data
 
 ## How does restic find the snapshots to remove?
 
@@ -251,20 +236,18 @@ removal. It will then remove all the snapshots for these hours from the list.
 
 It's easier than it sounds. Consider the following snapshots in a repo:
 
-{% highlight console %}
-$ restic snapshots
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-dbd30e0e  2016-08-22 03:00:00  mopped      /home/fd0/tmp/data
-45e789ca  2016-08-22 03:53:08  mopped      /home/fd0/tmp/data
-c0411b71  2016-08-22 04:00:00  mopped      /home/fd0/tmp/data
-1f782cb4  2016-08-22 04:13:23  mopped      /home/fd0/tmp/data
-62df5e1e  2016-08-22 04:18:23  mopped      /home/fd0/tmp/data
-0b9fe168  2016-08-22 05:23:00  mopped      /home/fd0/tmp/data
-0fe0dcfe  2016-08-22 18:08:17  mopped      /home/fd0/tmp/data
-d221a465  2016-08-22 19:24:00  mopped      /home/fd0/tmp/data
-98fb9f00  2016-08-22 19:53:23  mopped      /home/fd0/tmp/data
-{% endhighlight %}
+    $ restic snapshots
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    dbd30e0e  2016-08-22 03:00:00  mopped      /home/fd0/tmp/data
+    45e789ca  2016-08-22 03:53:08  mopped      /home/fd0/tmp/data
+    c0411b71  2016-08-22 04:00:00  mopped      /home/fd0/tmp/data
+    1f782cb4  2016-08-22 04:13:23  mopped      /home/fd0/tmp/data
+    62df5e1e  2016-08-22 04:18:23  mopped      /home/fd0/tmp/data
+    0b9fe168  2016-08-22 05:23:00  mopped      /home/fd0/tmp/data
+    0fe0dcfe  2016-08-22 18:08:17  mopped      /home/fd0/tmp/data
+    d221a465  2016-08-22 19:24:00  mopped      /home/fd0/tmp/data
+    98fb9f00  2016-08-22 19:53:23  mopped      /home/fd0/tmp/data
 
 Running `forget --keep-hourly 4`, restic will find the two snapshots at
 19:24:00 and 19:53:23. This is one hour (starting at 19:00:00 and ending at
@@ -273,25 +256,23 @@ means that `98fb9f00` is kept, and `d221a465` is removed. The next hour that
 has a snapshot starts at 18:00:00, the one after that at 05:00:00, and so on.
 This is the result of running `forget --keep-hourly 4`:
 
-{% highlight console %}
-$ restic forget --dry-run --keep-hourly 4
-keep 21 snapshots:
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-62df5e1e  2016-08-22 04:18:23  mopped      /home/fd0/tmp/data
-0b9fe168  2016-08-22 05:23:00  mopped      /home/fd0/tmp/data
-0fe0dcfe  2016-08-22 18:08:17  mopped      /home/fd0/tmp/data
-98fb9f00  2016-08-22 19:53:23  mopped      /home/fd0/tmp/data
+    $ restic forget --dry-run --keep-hourly 4
+    keep 21 snapshots:
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    62df5e1e  2016-08-22 04:18:23  mopped      /home/fd0/tmp/data
+    0b9fe168  2016-08-22 05:23:00  mopped      /home/fd0/tmp/data
+    0fe0dcfe  2016-08-22 18:08:17  mopped      /home/fd0/tmp/data
+    98fb9f00  2016-08-22 19:53:23  mopped      /home/fd0/tmp/data
 
-remove 213 snapshots:
-ID        Date                 Host        Directory
-----------------------------------------------------------------------
-dbd30e0e  2016-08-22 03:00:00  mopped      /home/fd0/tmp/data
-45e789ca  2016-08-22 03:53:08  mopped      /home/fd0/tmp/data
-c0411b71  2016-08-22 04:00:00  mopped      /home/fd0/tmp/data
-1f782cb4  2016-08-22 04:13:23  mopped      /home/fd0/tmp/data
-d221a465  2016-08-22 19:24:00  mopped      /home/fd0/tmp/data
-{% endhighlight %}
+    remove 213 snapshots:
+    ID        Date                 Host        Directory
+    ----------------------------------------------------------------------
+    dbd30e0e  2016-08-22 03:00:00  mopped      /home/fd0/tmp/data
+    45e789ca  2016-08-22 03:53:08  mopped      /home/fd0/tmp/data
+    c0411b71  2016-08-22 04:00:00  mopped      /home/fd0/tmp/data
+    1f782cb4  2016-08-22 04:13:23  mopped      /home/fd0/tmp/data
+    d221a465  2016-08-22 19:24:00  mopped      /home/fd0/tmp/data
 
 When `--keep-daily` is set, e.g. to the value 7, then restic will apply a similar
 approach to `--keep-hourly`: Go through the list, find the last seven days in

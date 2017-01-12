@@ -1,7 +1,7 @@
 ---
 layout: default
 sitenav:
-  - { anchor: "about", title: "About" }
+  - { anchor: "intro", title: "Introduction" }
   - { anchor: "quickstart", title: "Quickstart" }
   - { anchor: "compatibility", title: "Compatibility" }
   - { anchor: "contribute", title: "Contribute" }
@@ -9,9 +9,10 @@ sitenav:
   - { anchor: "talks", title: "Talks" }
   - { anchor: "license", title: "License" }
 permalink: /
+title: Backups done right!
 ---
 
-<h1 class="page-title"><a name="about"></a>restic</h1>
+# <a name="intro"></a>Introduction
 
 restic is a program that does backups right. The design goals are:
 

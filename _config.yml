@@ -7,7 +7,6 @@ description: Backups done right!
 # efficient, and the backups are verifiable!
 baseurl: "/"
 url: "https://restic.github.io" # the base hostname & protocol for your site
-github_username: restic
 language: en
 blog_baseurl: "/blog/"
 

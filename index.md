@@ -37,7 +37,7 @@ A short recorded demo of restic:
 To learn more about restic, checkout the user manual:
 
  * [Manual for restic (released version)](https://restic.readthedocs.io/en/stable/)
- * [Manual for restic (latest develompent version)](https://restic.readthedocs.io/en/latest/)
+ * [Manual for restic (latest development version)](https://restic.readthedocs.io/en/latest/)
 
 ## <a name="compatibility"></a>Compatibility
 

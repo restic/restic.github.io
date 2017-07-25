@@ -152,8 +152,9 @@ We're sorry this bug made it into a release of restic.
 Software has bugs, so always make sure you have enough safety checks to detect
 important bugs within a short amount of time. In this case, the `check` command
 would've detected the error right after `prune` ran, but it seems nobody
-(including the restic authors) did run a `check` right after `prune`. We'll add
-a prominent recommendation to the manual to regularly run `check`. In addition,
-we're planning to have restic print a message when `check` hasn't been run for
-some time. We've also added a test which creates a few snapshots, runs
-`forget`, `prune` and finally `check` to see if there's any error.
+(including the restic authors) did run a `check` right after `prune`.
+
+We'll add a prominent recommendation to the manual to regularly run `check`. In
+addition, we're planning to have restic print a message when `check` hasn't
+been run for some time. We've also added a test which creates a few snapshots,
+runs `forget`, `prune` and finally `check` to see if there's any error. This is tracked in [GitHub issue #1137](https://github.com/restic/restic/issues/1137).

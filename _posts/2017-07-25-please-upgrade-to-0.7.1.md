@@ -59,7 +59,7 @@ step is to remove the old, now superseded index files.
 
 The procedure we've just described in the previous paragraph contains a bug.
 Did you notice it? What happens when after the (now unneeded) files have been
-removed, but the index could not be saved to the repo?
+removed the index could not be saved to the repo?
 
 This was reported (thankfully) by a user as [GitHub issue #1032](https://github.com/restic/restic/issues/1032).
 The next time restic starts, it reads the old index files (remember, the new

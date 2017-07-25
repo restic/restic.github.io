@@ -5,8 +5,8 @@ title: "Please upgrade to restic 0.7.1!"
 
 TL;DR:
 
- * Under some circumstances, restic thought that data is stored in the repo that is not there
- * This lead to incomplete backups
+ * Under some circumstances, data in the repo was not stored properly
+ * This could have caused incomplete backups
  * **Upgrade restic to at least 0.7.1 and run `restic rebuild-index` before the next backup**
  * It is good practice to run `restic check` regularly
 
@@ -15,7 +15,7 @@ TL;DR:
 We always knew that at some point there may be a more serious bug in restic
 that warrants a broader announcement. This is the story of how a small
 improvement that makes the code even more conservative lead to a small error
-which then caused a cascade of unintended consequences. In the end, under some
+which then caused a couple of unintended consequences. In the end, under some
 specific circumstances restic wrote incomplete snapshots to the repository.
 
 But let's start at the beginning. Restic stores all data for backups in a

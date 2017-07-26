@@ -124,7 +124,7 @@ restic 0.7.1 on 2017-07-22. So the time frame is rather narrow.
 ### How Do I Know If I'm Affected?
 
 Did you run `prune` with restic 0.7.0, or more specifically commit [91a24e8](https://github.com/restic/restic/commit/91a24e822911c48ae00760dd70d2d55a40d8aff6)
-(in case you're tracking the master branch)? If you didn't, you're not
+(in case you're tracking the master branch)? If you didn't, you're probably not
 affected.
 
 You can check as follows: Run the `rebuild-index` followed by the
@@ -156,5 +156,7 @@ would've detected the error right after `prune` ran, but it seems nobody
 
 We'll add a prominent recommendation to the manual to regularly run `check`. In
 addition, we're planning to have restic print a message when `check` hasn't
-been run for some time. We've also added a test which creates a few snapshots,
-runs `forget`, `prune` and finally `check` to see if there's any error. This is tracked in [GitHub issue #1137](https://github.com/restic/restic/issues/1137).
+been run for some time. This is tracked in
+[GitHub issue #1137](https://github.com/restic/restic/issues/1137).
+We've also added a test which creates a few snapshots, runs `forget`, `prune`
+and finally `check` to see if there's any error.

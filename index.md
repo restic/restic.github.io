@@ -3,6 +3,7 @@ layout: default
 sitenav:
   - { anchor: "intro", title: "Introduction" }
   - { anchor: "quickstart", title: "Quickstart" }
+  - { anchor: "installation", title: "Installation" }
   - { anchor: "compatibility", title: "Compatibility" }
   - { anchor: "contribute", title: "Contribute" }
   - { anchor: "contact", title: "Contact" }
@@ -38,6 +39,16 @@ To learn more about restic, checkout the user manual:
 
  * [Manual for restic (released version)](https://restic.readthedocs.io/en/stable/)
  * [Manual for restic (latest development version)](https://restic.readthedocs.io/en/latest/)
+
+## <a name="installation"></a>Installation
+
+To install, please follow the instrucions on page:
+
+ * [Installation Instrucions Page](https://restic.readthedocs.io/en/stable/installation.html)
+
+Or download the latest native binary on page:
+
+ * [Download Page](https://github.com/restic/restic/releases/latest)
 
 ## <a name="compatibility"></a>Compatibility
 

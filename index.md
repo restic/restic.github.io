@@ -42,13 +42,7 @@ To learn more about restic, checkout the user manual:
 
 ## <a name="installation"></a>Installation
 
-To install, please follow the instrucions on page:
-
- * [Installation Instrucions Page](https://restic.readthedocs.io/en/stable/installation.html)
-
-Or download the latest native binary on page:
-
- * [Download Page](https://github.com/restic/restic/releases/latest)
+To install, please follow the [Installation Instructions Page](https://restic.readthedocs.io/en/stable/installation.html) in the manual or download the latest native binary on the [GitHub Download Page](https://github.com/restic/restic/releases/latest).
 
 ## <a name="compatibility"></a>Compatibility
 

@@ -6,7 +6,7 @@ description: Backups done right!
 # restic is a program that does backups right. IT's easy, fast, secure and
 # efficient, and the backups are verifiable!
 baseurl: "/"
-url: "https://restic.github.io" # the base hostname & protocol for your site
+url: "https://restic.net" # the base hostname & protocol for your site
 language: en
 blog_baseurl: "/blog/"
 
@@ -15,6 +15,9 @@ permalink: /blog/:categories/:year-:month-:day/:title
 
 # Build settings
 markdown: kramdown
+
+plugins:
+  - jekyll-redirect-from
 
 # enable GitHub Flavoured Markdown
 kramdown:

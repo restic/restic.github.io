@@ -2,6 +2,7 @@
 layout: post
 title: Foundation - Introducing Content Defined Chunking (CDC)
 date: 2015-09-12 21:41
+redirect_to: https://restic.net/blog/2015-09-12/restic-foundation1-cdc
 ---
 
 This post will explain Content Defined Chunking (CDC) and how it is used by

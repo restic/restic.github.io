@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Upcoming changes for the S3 backend"
+redirect_to: https://restic.net/blog/2017-11-25/upcoming-changes-to-s3
 ---
 
 TL;DR: If you're using the `s3` backend and cannot access your repo any more, append the path `/restic` to the repository location.

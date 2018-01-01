@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "restic on GoTime #48"
+redirect_to: https://restic.net/blog/2017-06-01/restic-on-gotime
 ---
 
 Last week [Alex](https://github.com/fd0) had the honour to join [Ashley](https://twitter.com/ashleymcnamara), [Erik](https://twitter.com/erikstmartin), and [Brian](https://twitter.com/bketelsen) at [GoTime](https://gotime.fm). GoTime is a podcast about Go, the community, and everything in between. It was a lot of fun (and he got to do the intro in German). The episode can be found on the [website](https://changelog.com/gotime/48), you can also listen to it right here:

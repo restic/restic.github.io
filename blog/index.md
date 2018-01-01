@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Blog
+redirect_to: https://restic.net/blog/
 permalink: /blog/
 ---
 

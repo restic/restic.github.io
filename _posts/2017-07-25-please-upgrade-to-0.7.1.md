@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Please upgrade to restic 0.7.1!"
+redirect_to: https://restic.net/blog/2017-07-25/please-upgrade-to-0.7.1
 ---
 
 TL;DR:

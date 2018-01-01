@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Documentation and Manual"
+redirect_to: https://restic.net/blog/2016-02-24/Documentation
 ---
 
 Documentation in software projects is one of the things most developers hate.

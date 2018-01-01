@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "The Go Devroom at FOSDEM 2017"
+redirect_to: https://restic.net/blog/2017-02-02/FOSDEM-2017-Brussels
 ---
 
 For the third time at this year's [FOSDEM](https://fosdem.org) (which stands for "Free and Open

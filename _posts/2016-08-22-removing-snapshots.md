@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Removing Snapshots"
+redirect_to: https://restic.net/blog/2016-08-22/removing-snapshots
 ---
 
 The feature that was most often requested feature for restic is the ability to

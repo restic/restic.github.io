@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Verifying Code Archive Integrity"
+redirect_to: https://restic.net/blog/2015-09-16/verifying-code-archive-integrity
 ---
 
 The restic project and all the source code, even this website is hosted by

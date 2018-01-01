@@ -1,5 +1,6 @@
 ---
 layout: default
+redirect_to: https://restic.net
 sitenav:
   - { anchor: "intro", title: "Introduction" }
   - { anchor: "quickstart", title: "Quickstart" }

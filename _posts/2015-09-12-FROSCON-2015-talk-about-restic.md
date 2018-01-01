@@ -2,6 +2,7 @@
 layout: post
 title: "FrOSCon 2015 Lecture: A Solution to the Backup Inconvenience"
 date: 2015-09-12 14:30
+redirect_to: https://restic.net/blog/2015-09-12-FROSCON-2015-talk-about-restic
 ---
 
 For the tenth time, FrOSCon took place at the University of Applied Sciences

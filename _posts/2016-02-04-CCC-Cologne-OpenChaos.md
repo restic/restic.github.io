@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "OpenChaos at CCC Cologne: restic - Backups mal richtig"
+redirect_to: https://restic.net/blog/2016-02-04/CCC-Cologne-OpenChaos
 ---
 
 On Friday, 30 January [fd0](https://github.com/fd0) gave a talk at the [Chaos
